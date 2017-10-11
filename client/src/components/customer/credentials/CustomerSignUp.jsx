@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import $ from 'jquery';
 
+<<<<<<< HEAD
 class CustomerSignUp extends React.Component {
   constructor(props) {
   	super(props);
@@ -36,6 +37,30 @@ class CustomerSignUp extends React.Component {
       data: data,
       success: (data) => {
         this.setState({
+=======
+class SignUp extends React.Component {
+  constructor() {
+  	this.state = {
+      email: '',
+      username: '',
+      password: ''
+  	}
+  	this.handleChange = this.handleChange.bind(this)
+  }
+
+  handleChange(e, type) {
+    this.setState({
+    	`${type}`: e.target.value
+    })
+  }
+  handleSubmit(e) {
+    e.preventDefault();
+    $.ajax({
+      url: `/customersignup?username=${this.state.username}&password=${this.state.password}`,
+      method: 'POST',
+      success: (data) => {
+        self.setState({
+>>>>>>> Create templates for customer login and signup
           unauthorised: false
         });
         window.location.href = data;
@@ -55,6 +80,7 @@ class CustomerSignUp extends React.Component {
 
   render() {
     return (
+<<<<<<< HEAD
       <div className='container'> 
         <form className='form-signin'>
           <h2 className='form-signin-heading'>Sign up</h2>
@@ -112,10 +138,34 @@ class CustomerSignUp extends React.Component {
             onClick={(e)=> this.handleSubmit(e)}
           > enter </button>
         </form>
+=======
+      <div> 
+        <div>
+          <input type='text'/> 
+          <button> 
+          </button>
+        </div>
+        <div>
+          <input onChange={(e)=> this.handleChange(e, 'email')} type='text'/> 
+          <button onClick={(e)=> this.handleSubmit(e)}> email
+          </button>
+        </div>
+        <div>
+          <input onChange={(e)=> this.handleChange(e, 'username')} type='text'/> 
+          <button onClick={(e)=> this.handleSubmit(e)}> email
+          </button>
+        </div>
+        <div>
+          <input onChange={(e)=> this.handleChange(e, 'password')} type='text'/> 
+          <button onClick={(e)=> this.handleSubmit(e)}> email
+          </button>
+        </div>
+>>>>>>> Create templates for customer login and signup
       </div>
     )
   }
 }
+<<<<<<< HEAD
 /*
       <div className='container'>
         <form className='form-signin' onSubmit={this.submitHandler.bind(this)}>
@@ -152,3 +202,7 @@ class CustomerSignUp extends React.Component {
       </div>
 */
 export default CustomerSignUp;
+=======
+
+export default SignUp;
+>>>>>>> Create templates for customer login and signup
