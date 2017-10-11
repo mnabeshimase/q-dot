@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import $ from 'jquery';
 
-class SignUp extends React.Component {
+class CustomerSignUp extends React.Component {
   constructor() {
   	this.state = {
       email: '',
@@ -69,4 +69,4 @@ class SignUp extends React.Component {
   }
 }
 
-export default SignUp;
+export default CustomerSignUp;
