@@ -44,24 +44,16 @@ class CustomerSignUp extends React.Component {
   render() {
     return (
       <div> 
-        <div>
-          <input type='text'/> 
-          <button> 
-          </button>
-        </div>
+
         <div>
           <input onChange={(e)=> this.handleChange(e, 'email')} type='text'/> 
-          <button onClick={(e)=> this.handleSubmit(e)}> email
-          </button>
         </div>
         <div>
           <input onChange={(e)=> this.handleChange(e, 'username')} type='text'/> 
-          <button onClick={(e)=> this.handleSubmit(e)}> email
-          </button>
         </div>
         <div>
           <input onChange={(e)=> this.handleChange(e, 'password')} type='text'/> 
-          <button onClick={(e)=> this.handleSubmit(e)}> email
+          <button onClick={(e)=> this.handleSubmit(e)}> enter
           </button>
         </div>
       </div>
