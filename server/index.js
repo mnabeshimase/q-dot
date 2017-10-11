@@ -14,6 +14,13 @@ const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const passport = require('./passport.js');
 
+/* Import React modules for server rendering */
+import React from 'react';
+import ReactDOMServer from 'react-dom/server';
+import { StaticRouter } from 'react-router';
+import Customer from '../client/src/components/customer/customerApp.jsx';
+const customerTemplate = require('../client/dist/customer/index.html.js');
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -81,6 +88,28 @@ app.get('/restaurants', (req, res) => {
         res.send('failed for info on all restaurants');
       });
   }
+});
+
+//get info for one restaurant
+app.get('/restaurant/:name/:id', (req, res) => {
+  dbQuery.findInfoForOneRestaurant(req.params.id)
+    .then(results => {
+      const context = {};
+      const component = ReactDOMServer.renderToString(
+        <StaticRouter location={req.url} context={context}>
+          <Customer currentRestaurant={results}/>
+        </StaticRouter>
+      )
+      if (context.url) {
+        res.redirect(301, context.url);
+      } else {
+        res.send(customerTemplate({ component: component}));
+      }
+    })
+    .catch(error => {
+      console.log('error getting info for one restaurants', error);
+      res.end();
+    });
 });
 
 //drop database and add dummy data
@@ -285,4 +314,3 @@ const socketUpdateManager = (restaurantId) => {
     io.to(managerMap[restaurantId]).emit('update', 'queue changed');
   }
 };
-

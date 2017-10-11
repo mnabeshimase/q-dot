@@ -3,11 +3,18 @@ import CustomerNav from './CustomerNav.jsx';
 import CustomerMain from './CustomerMain.jsx';
 
 // render the big components here
-const CustomerApp = () => (
-  <div>
-    <CustomerNav />
-    <CustomerMain />
-  </div>
-);
+class CustomerApp extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return(
+      <div>
+        <CustomerNav />
+        <CustomerMain currentRestaurant={this.props.currentRestaurant}/>
+      </div>
+    )
+  }
+};
 
 export default CustomerApp;

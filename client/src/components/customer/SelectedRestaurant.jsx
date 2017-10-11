@@ -4,6 +4,7 @@ import CustomerInfoForm from './CustomerInfoForm.jsx';
 import QueueInfo from './QueueInfo.jsx';
 import RestaurantInformation from './RestaurantInformation.jsx';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 class SelectedRestaurant extends React.Component {
   constructor(props) {
@@ -23,19 +24,13 @@ class SelectedRestaurant extends React.Component {
   }
 
   getRestaurant() {
-    let windowUrl = window.location.href;
-    let id = windowUrl.slice(-1);
-
-    $.ajax({
-      method: 'GET',
-      url: `/restaurants?restaurantId=${id}`,
-      success: (data) => {
-        console.log('successfully grabbed current restaurant data', data);
-        this.setState({ currentRestaurant: data });
-      },
-      failure: (error) => {
-        console.log('failed to grab current restaurant data', error);
-      }
+    let id = this.props.location.pathname.slice(-1);
+    axios.get(`/restaurants?restaurantId=${id}`)
+    .then(({ data }) => {
+      console.log('successfully grabbed current restaurant data', data);
+      this.setState({ currentRestaurant: data });
+    }, (error) => {
+      console.log('failed to grab current restaurant data', error);
     });
   }
 
@@ -49,13 +44,13 @@ class SelectedRestaurant extends React.Component {
 
   render() {
     const restaurantImg = {
-      backgroundImage: `url(../${this.state.currentRestaurant.image})`
+      backgroundImage: `url(../${this.props.currentRestaurant ? this.props.currentRestaurant.image : this.state.currentRestaurant.image})`
     };
 
     return (
       <div className="selected-restaurant">
         <RestaurantLogoBanner style={restaurantImg} />
-        <RestaurantInformation restaurant={this.state.currentRestaurant}/>
+        <RestaurantInformation restaurant={this.props.currentRestaurant || this.state.currentRestaurant}/>
         <CustomerInfoForm customerInfoSubmitted={this.customerInfoSubmitted} />
       </div>
     );
