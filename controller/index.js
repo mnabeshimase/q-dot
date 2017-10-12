@@ -38,13 +38,16 @@ const findInfoForOneRestaurant = (restaurantId) => {
 
 //find info for all restaurants with current queue information
 const findInfoForAllRestaurants = () => {
-  return db.Restaurant.findAll({include: [db.Queue]})
-    .then(restaurants => {
-      restaurants.forEach(restaurant => {
-        restaurant.dataValues.queues = restaurant.queues.filter(row => row.position !== null);
-      });
-      return restaurants;
+  return db.Restaurant.findAll({
+    include: [db.Queue],
+    order: [['id', 'ASC']]
+  })
+  .then(restaurants => {
+    restaurants.forEach(restaurant => {
+      restaurant.dataValues.queues = restaurant.queues.filter(row => row.position !== null);
     });
+    return restaurants;
+  });
 };
 
 //update restaurant open/close status

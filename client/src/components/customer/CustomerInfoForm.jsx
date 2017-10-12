@@ -66,7 +66,7 @@ class CustomerInfoForm extends React.Component {
 
     $.ajax({
       method: 'POST',
-      url: '../../queues',
+      url: '/api/queues',
       data: JSON.stringify({
         name: fullName,
         mobile: this.state.customerMobile,
@@ -123,4 +123,3 @@ class CustomerInfoForm extends React.Component {
 }
 
 export default CustomerInfoForm;
-

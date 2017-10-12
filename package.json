@@ -38,17 +38,19 @@
     "redis": "^2.8.0",
     "redis-cli": "^1.0.2",
     "request": "^2.83.0",
+    "request-promise": "^4.2.2",
     "sequelize": "^4.13.2",
     "socket.io": "^2.0.3",
     "webpack": "^3.6.0"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
+    "css-loader": "^0.28.7",
     "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor",
+    "file-loader": "^1.1.4",
     "mocha": "^4.0.0",
     "nodemon": "^1.12.1",
-    "url-loader": "^0.5.9",
     "style-loader": "^0.18.2",
-    "file-loader": "^1.1.4",
-    "css-loader": "^0.28.7"
+    "url-loader": "^0.5.9"
   }
 }

@@ -67,12 +67,12 @@ Schema includes 3 tables shown below:
 
 **Return a list of all the restaurants in the database**
 
-GET request to '/restaurants' returns a list of all the restaurants in the database. The list contains restaurant objects with the restaurant's id, name, phone, image and current queue count. There is a timestamp for when the restaurant was created in the database and a timestamp for the last time it was updated.
+GET request to '/api/restaurants' returns a list of all the restaurants in the database. The list contains restaurant objects with the restaurant's id, name, phone, image and current queue count. There is a timestamp for when the restaurant was created in the database and a timestamp for the last time it was updated.
 
 Example:
 
 ```
-request.get('https://q-dot.herokuapp.com/restaurants');
+request.get('https://q-dot.herokuapp.com/api/restaurants');
 
 //response
 
@@ -91,7 +91,7 @@ request.get('https://q-dot.herokuapp.com/restaurants');
         "average_wait": 3,
         //returns an integer, average wait time of restaurant
         "status": "Open",
-        //returns a string, either "Open" or "Close", reflecting 
+        //returns a string, either "Open" or "Close", reflecting
         "image": "../images/subway.jpg",
          //returns a string, url for the restaurant image
         "createdAt": "2017-10-06T19:23:08.999Z",
@@ -115,11 +115,11 @@ request.get('https://q-dot.herokuapp.com/restaurants');
 
 ```
 
-### /restaurants?restaurantId=[restaurantId]
+### /api/restaurants?restaurantId=[restaurantId]
 
 **Returns information of a selected restaurant in database, including detailed queue information**
 
-GET request to '/restaurants?restaurantId=[restaurantId]' returns information of a selected restaurant in the database, including the restaurant's id, image, name, phone, current queue count, and current queue information.
+GET request to '/api/restaurants?restaurantId=[restaurantId]' returns information of a selected restaurant in the database, including the restaurant's id, image, name, phone, current queue count, and current queue information.
 
 Current queue information includes the position, size of the group, and customer information.
 
@@ -128,7 +128,7 @@ Accepts the restaurant id as part of the query string.
 Example:
 
 ```
-request.get('https://q-dot.herokuapp.com/restaurants?restaurantId=1');
+request.get('https://q-dot.herokuapp.com/api/restaurants?restaurantId=1');
 
 //response:
 
@@ -207,11 +207,11 @@ Failed Request:
 
 ```
 
-## /queues
+## /api/queues
 
 **To add customer to a queue of a restaurant**
 
-POST request to '/queues' will add a customer to the queue of a restaurant. Expected data in request is a JSON object including the name, mobile, email (optional), size and restaurantId. 
+POST request to '/api/queues' will add a customer to the queue of a restaurant. Expected data in request is a JSON object including the name, mobile, email (optional), size and restaurantId.
 
 If the restaurant is open, the response is an object that includes the customer name, mobile, email (if provided), size, position and queueId. If the restaurant is closed, the response will be a string 'Restaurant has closed the queue.'
 
@@ -220,7 +220,7 @@ Example:
 ```
 
 requestBody = {
-    "name": "John", 
+    "name": "John",
     //name should be a string
     "mobile": "1234550284",
     //mobile should be a string
@@ -228,11 +228,11 @@ requestBody = {
     //email should be a string
     "size": 2,
     //size should be a number
-    "restaurantId": 4 
+    "restaurantId": 4
     //restaurantId should be a number
 }
 
-request.post('https://q-dot.herokuapp.com/queues', requestBody);
+request.post('https://q-dot.herokuapp.com/api/queues', requestBody);
 
 //response
 
@@ -376,7 +376,7 @@ Successful Request:
     "size": 4,
     //returns an integer, represents the group size of the customer's reservation
     "position": 2,
-    //returns an integer, represents the queue number that was given to the customer 
+    //returns an integer, represents the queue number that was given to the customer
     "wait": 6,
     //returns an integer, represents the wait time for the customer
     "restaurant": {
@@ -527,7 +527,7 @@ request.post('https://q-dot.herokuapp.com/dummydata');
 
 [
     {name: 'Tempest', phone: '(123) 456-7890', image: '../images/tempest.png', 'nextPosition': 0, status: 'Open'},
-    {name: 'Subway', phone: '(123) 456-7990', image: '../images/subway.png', 'nextPosition': 0, status: 
+    {name: 'Subway', phone: '(123) 456-7990', image: '../images/subway.png', 'nextPosition': 0, status:
     'Open'},
     {name: 'Chipotle', phone: '(132) 456-7990', image: '../images/chipotle.png', 'nextPosition': 1, status: 'Closed'}
 ]
@@ -536,8 +536,8 @@ request.post('https://q-dot.herokuapp.com/dummydata');
 
 [
     {name: 'tiffany', mobile: '2345639762'},
-    {name: 'Neha', mobile: '(786) 987-4567', email: 'nez@gmail.com'}, 
-    {name: 'Eugene', mobile: '(975) 097-8967', email: 'eugene@gmail.com'}, 
+    {name: 'Neha', mobile: '(786) 987-4567', email: 'nez@gmail.com'},
+    {name: 'Eugene', mobile: '(975) 097-8967', email: 'eugene@gmail.com'},
     {name: 'Johnny', mobile: '(456) 730-5746'}
 ]
 

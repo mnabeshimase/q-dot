@@ -116,7 +116,7 @@ class ManagerApp extends React.Component {
     customer.restaurantId = 1;
     $.ajax({
       method: 'POST',
-      url: '/queues',
+      url: '/api/queues',
       data: JSON.stringify(customer),
       contentType: 'application/json',
       success: (data) => {
@@ -146,7 +146,7 @@ class ManagerApp extends React.Component {
 
   reloadData() {
     $.ajax({
-      url: '/restaurants?restaurantId=1',
+      url: '/api/restaurants?restaurantId=1',
       success: (data) => {
         console.log(data);
         this.setState(

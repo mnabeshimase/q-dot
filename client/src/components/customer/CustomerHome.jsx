@@ -29,9 +29,8 @@ class CustomerHome extends React.Component {
   getRestaurantList() {
     $.ajax({
       method: 'GET',
-      url: '/restaurants',
+      url: '/api/restaurants',
       success: (data) => {
-        // let filteredData = data
         console.log('successfully grabbed restaurant data', data);
         this.setState({ restaurantList: data });
       },
@@ -74,4 +73,3 @@ class CustomerHome extends React.Component {
 }
 
 export default CustomerHome;
-

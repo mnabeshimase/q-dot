@@ -27,13 +27,13 @@ class SelectedRestaurant extends React.Component {
 
   getRestaurant() {
     let id = this.props.location.pathname.slice(-1);
-    axios.get(`/restaurants?restaurantId=${id}`)
-      .then(({ data }) => {
-        console.log('successfully grabbed current restaurant data', data);
-        this.setState({ currentRestaurant: data });
-      }, (error) => {
-        console.log('failed to grab current restaurant data', error);
-      });
+    axios.get(`/api/restaurants?restaurantId=${id}`)
+    .then(({ data }) => {
+      console.log('successfully grabbed current restaurant data', data);
+      this.setState({ currentRestaurant: data });
+    }, (error) => {
+      console.log('failed to grab current restaurant data', error);
+    });
   }
 
   customerInfoSubmitted(id, position) {

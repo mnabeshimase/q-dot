@@ -74,7 +74,7 @@ app.get('/', (req, res) => {
 });
 
 //get info for one restaurant or all restaurants
-app.get('/restaurants', (req, res) => {
+app.get('/api/restaurants', (req, res) => {
   if (req.query.restaurantId) {
     dbQuery.findInfoForOneRestaurant(req.query.restaurantId)
       .then(results => res.send(results))
@@ -150,8 +150,7 @@ app.post('/dummydata', (req, res) => {
 });
 
 //add a customer to the queue at a restaurant
-app.post('/queues', (req, res) => {
-  console.log('req body', req.body);
+app.post('/api/queues', (req, res) => {
   if (!req.body.name || !req.body.mobile || !req.body.restaurantId
       || !req.body.size) {
     res.status(400).send('Bad Request');
