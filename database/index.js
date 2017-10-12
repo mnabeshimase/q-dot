@@ -69,7 +69,8 @@ const Queue = db.define('queue', {
     type: Sequelize.INTEGER,
     defaultValue: 0
   },
-  position: Sequelize.INTEGER
+  position: Sequelize.INTEGER,
+  customer_message: Sequelize.STRING
 });
 
 //Restaurant Schema

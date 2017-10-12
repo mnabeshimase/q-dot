@@ -66,7 +66,6 @@ app.use((req, res, next) => {
 
 app.get('/', (req, res) => {
   if (req.session.queueInfo) {
-    // console.log('--------', req.session.queueInfo)
     res.redirect(`/customer/queueinfo?queueId=${req.session.queueInfo.queueId}`);
   } else {
     res.redirect('/customer');
@@ -151,7 +150,7 @@ app.post('/dummydata', (req, res) => {
 
 //add a customer to the queue at a restaurant
 app.post('/api/queues', (req, res) => {
-  if (!req.body.name || !req.body.mobile || !req.body.restaurantId
+  if (!req.body.name || !req.body.mobile || !req.body.email || !req.body.restaurantId
       || !req.body.size) {
     res.status(400).send('Bad Request');
   } else {

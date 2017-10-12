@@ -31,6 +31,19 @@ describe ('Restaurant API routes', function() {
   });
 
   describe ('POST request to /api/queues', function() {
+    it ('should not accept a queue without name, mobile, email, size, or restaurant id', function(done) {
+      rp({
+        uri: `${serverURL}/api/queues`,
+        method: 'POST',
+        json: {
+          invalidFormat: 'invalidFormat'
+        }
+      })
+      .catch((error) => {
+        expect(error).to.exist;
+        done();
+      })
+    });
     it ('should insert a new row into queues table', function(done) {
       let oldQueueCount;
       db.Queue.count()
@@ -56,6 +69,26 @@ describe ('Restaurant API routes', function() {
         expect(newQueueCount).to.be.above(oldQueueCount);
         done();
       });
+    });
+    it ('should accept an optional message from customer', function(done) {
+      rp({
+        uri: `${serverURL}/api/queues`,
+        method: 'POST',
+        json: {
+          name: 'Example User with message',
+          mobile: '(123) 456-7890',
+          email: 'example@email.com',
+          size: 2,
+          customerMessage: 'Today is my birthday!',
+          restaurantId: 1
+        }
+      })
+      .then(() => db.Queue.findOne({ where: { customer_message: 'Today is my birthday!' } }))
+      .then((results) => {
+        expect(results).to.exist;
+        expect(results.dataValues.restaurantId).to.equal(1);
+        done();
+      })
     });
   });
 
