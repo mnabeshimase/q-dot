@@ -58,6 +58,26 @@ const findOrAddCustomer = (params) => {
     });
 };
 
+const findOrAddCustomerN = (params) => {
+  return db.Customer.findOne({where: {mobile: params.mobile}})
+    .then(customer => {
+      if (customer === null) {
+        const customer = {
+          name: helpers.nameFormatter(params.name),
+          mobile: helpers.phoneNumberFormatter(params.mobile)
+        };
+        customer.password = params.password;
+        if (params.email) {
+          customer.email = params.email;
+        }
+
+
+        return db.Customer.create(customer);
+      } else {
+        return customer;
+      }
+    });
+};
 
 // get current queue info for one restaurant
 const getQueueInfo = (restaurantId, customerId, customerPosition) => {
@@ -161,7 +181,8 @@ module.exports = {
   findInfoForAllRestaurants: findInfoForAllRestaurants,
   findInfoForOneRestaurant: findInfoForOneRestaurant,
   findOrAddCustomer: findOrAddCustomer,
-  addToQueue: addToQueue,
+  findOrAddCustomerN: findOrAddCustomerN,
+  //addToQueue: addToQueue,
   updateRestaurantStatus: updateRestaurantStatus,
   getQueueInfo: getQueueInfo,
   getCustomerInfo: getCustomerInfo,

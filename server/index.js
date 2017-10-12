@@ -35,7 +35,8 @@ app.use(session({
     maxAge: 18000000
   },
   name: 'qsessionid',
-  resave: false
+  resave: false,
+  saveUnitialized: false
 }));
 
 //these middlewares initialise passport and adds req.user to req object if user has aleady been authenticated
@@ -101,6 +102,7 @@ app.post('/customersignup', (req, res) => {
   params.mobile = req.body.mobile;
   params.passwordHash = password.passwordHash;
   params.salt = password.salt;
+
   dbQuery.findOrAddCustomerN(params)
     .then((results) => {
       console.log(results);
@@ -133,6 +135,7 @@ app.get('/restaurant/:name/:id', (req, res) => {
       res.end();
     });
 });
+
 
 //drop database and add dummy data
 app.post('/dummydata', (req, res) => {
