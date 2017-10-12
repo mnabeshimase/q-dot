@@ -16,6 +16,7 @@ const phoneNumberFormatter = (number) => {
   return number.replace(/^(\d{3})(\d{3})(\d{4})$/, '($1) $2-$3');
 };
 
+
 module.exports = {
   nameFormatter: nameFormatter,
   phoneNumberFormatter: phoneNumberFormatter,

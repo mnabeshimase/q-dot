@@ -11,6 +11,7 @@ class CustomerInfoForm extends React.Component {
     this.getLastName = this.getLastName.bind(this);
     this.getMobile = this.getMobile.bind(this);
     this.getEmail = this.getEmail.bind(this);
+    this.getMenu = this.getMenu.bind(this);
     this.submitCustomerInfo = this.submitCustomerInfo.bind(this);
     this.state = {
       groupSize: 0,
@@ -18,7 +19,7 @@ class CustomerInfoForm extends React.Component {
       customerLastName: '',
       customerMobile: '',
       customerEmail: '',
-      currentRestaurantId: this.props.currentRestaurantId
+      currentRestaurantId: this.props.currentRestaurantId,
     };
   }
 
@@ -59,6 +60,21 @@ class CustomerInfoForm extends React.Component {
     });
   }
 
+  getMenu() {
+    $.ajax({
+      method: 'GET',
+      url: '/restaurant',
+      success: (data) => {
+        // let filteredData = data
+        console.log('successfully grabbed restaurant data', data);
+        this.setState({ restaurantList: data });
+      },
+      failure: (error) => {
+        console.log('failed to grab restaurant data', error);
+      }
+    });
+  }
+
   submitCustomerInfo() {
     let fullName = `${this.state.customerFirstName} ${this.state.customerLastName}`;
     let windowUrl = window.location.href;
@@ -85,6 +101,24 @@ class CustomerInfoForm extends React.Component {
       }
     });
   }
+
+  // searchYelp(query, callback) {
+  //   let options = {
+  //     url: `https://api.yelp.com/v3/businesses/search?term=${query}&location=San+Francisco`,
+  //     auth: {
+  //       clientid: 'xbqXaG1hQZcwXzFfTmnxuA',
+  //       clientSecret: '7PgxVEGN1jBnNTSTqNemdwJ1n0bU1eeS1JG4GWYyAvpKXqZFtTsOefIRKqs7jKDG'
+  //     }
+  //   };
+
+  //   request.get(options, (err, response, body) => {
+  //     if (err) {
+  //       console.log('Error!', err);
+  //     } else {
+  //       callback(body);
+  //     }
+  //   });
+  // }
 
   render() {
     return (

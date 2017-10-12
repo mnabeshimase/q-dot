@@ -41,24 +41,6 @@ class CustomerHome extends React.Component {
     });
   }
 
-  // searchYelp(query, callback) {
-  //   let options = {
-  //     url: `https://api.yelp.com/v3/businesses/search?term=${query}&location=San+Francisco`,
-  //     auth: {
-  //       clientid: 'xbqXaG1hQZcwXzFfTmnxuA',
-  //       clientSecret: '7PgxVEGN1jBnNTSTqNemdwJ1n0bU1eeS1JG4GWYyAvpKXqZFtTsOefIRKqs7jKDG'
-  //     }
-  //   };
-
-  //   request.get(options, (err, response, body) => {
-  //     if (err) {
-  //       console.log('Error!', err);
-  //     } else {
-  //       callback(body);
-  //     }
-  //   });
-  // }
-
   render() {
     let filteredRestaurants = this.state.restaurantList.filter(restaurant => restaurant.type.toLowerCase().indexOf(this.state.searchText.toLowerCase()) !== -1);
 
