@@ -1,6 +1,21 @@
 const db = require('../database/index.js');
 const { ne, lt, gt } = db.Sequelize.Op;
 const helpers = require('../helpers/helpers.js');
+const crypto = require('crypto');
+
+const genSalt = function() {
+  return crypto.randomBytes(16).toString('hex');
+};
+
+const genPassword = function(password, salt) {
+  var passwordHash = crypto.createHmac('sha512', salt);
+  passwordHash.update(password);
+  passwordHash = passwordHash.digest('hex');
+  return {
+    passwordHash: passwordHash,
+    salt: salt
+  };
+};
 
 //find info for one restaurant with current queue information
 const findInfoForOneRestaurant = (restaurantId) => {
@@ -58,6 +73,27 @@ const findOrAddCustomer = (params) => {
     });
 };
 
+const findOrAddCustomerN = (params) => {
+  return db.Customer.findOne({where: {mobile: params.mobile}})
+    .then(customer => {
+      if (customer === null) {
+        const customer = {
+          name: helpers.nameFormatter(params.name),
+          mobile: helpers.phoneNumberFormatter(params.mobile)
+        };
+        customer.passwordHash = params.passwordHash;
+        customer.salt = params.salt;
+        if (params.email) {
+          customer.email = params.email;
+        }
+
+
+        return db.Customer.create(customer);
+      } else {
+        return customer;
+      }
+    });
+};
 
 // get current queue info for one restaurant
 const getQueueInfo = (restaurantId, customerId, customerPosition) => {
@@ -161,10 +197,13 @@ module.exports = {
   findInfoForAllRestaurants: findInfoForAllRestaurants,
   findInfoForOneRestaurant: findInfoForOneRestaurant,
   findOrAddCustomer: findOrAddCustomer,
-  addToQueue: addToQueue,
+  findOrAddCustomerN: findOrAddCustomerN,
+  //addToQueue: addToQueue,
   updateRestaurantStatus: updateRestaurantStatus,
   getQueueInfo: getQueueInfo,
   getCustomerInfo: getCustomerInfo,
   getManagerInfo: getManagerInfo,
-  removeFromQueue: removeFromQueue
+  removeFromQueue: removeFromQueue,
+  genSalt: genSalt,
+  genPassword: genPassword
 };
