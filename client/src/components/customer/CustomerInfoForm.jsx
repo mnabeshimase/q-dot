@@ -18,7 +18,7 @@ class CustomerInfoForm extends React.Component {
       customerLastName: '',
       customerMobile: '',
       customerEmail: '',
-      currentRestaurantId: this.props.currentRestaurantId
+      currentRestaurantId: this.props.currentRestaurantId,
     };
   }
 
