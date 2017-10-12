@@ -42,7 +42,6 @@ class ManagerApp extends React.Component {
       queues: undefined,
       restaurantInfo: {},
       input: "",
-      // messages: props.messages ? props.messages : ""
       messages: [],
       modalIsOpen: false
     };
@@ -55,15 +54,14 @@ class ManagerApp extends React.Component {
       this.reloadData();
     });
 
+    // listens for 'chat message' and add new messages to array
     this.socket.on('chat message', (message) => {
-
       let oldMessages = this.state.messages;
       this.setState({messages: oldMessages.concat(message)});
     })
 
     this.handleOnSubmit = this.handleOnSubmit.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
-    this.handleMessageEvent = this.handleMessageEvent.bind(this);
     this.openModal = this.openModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
   }
@@ -84,23 +82,13 @@ class ManagerApp extends React.Component {
     });
   };
 
-  handleMessageEvent(){
-     this.socket.on('chat message', (inboundMessage) => {
-      //  let oldMessages = this.state.messages;
-      //  this.setState({messages: oldMessages.concat(inboundMessage)});
-       //this.props.newMessage({user: 'test_user', message: inboundMessage})
-       console.log('handleMessage', inboundMessage)
-    })
-  }
-
   handleOnChange(ev) {
-     this.setState({ input: ev.target.value })
+     this.setState({ input: ev.target.value });
    }
 
   handleOnSubmit(ev) {
     ev.preventDefault()
-    this.socket.emit('chat message', { name: this.state.restaurantInfo.name, message: this.state.input })
-
+    this.socket.emit('chat message', { name: this.state.restaurantInfo.name, message: this.state.input });
     this.setState({ input: '' })
    }
 
@@ -177,8 +165,6 @@ class ManagerApp extends React.Component {
     });
   }
 
-  //add <ChatLog>
-
   render() {
     const messages = this.state.messages;
     const message = messages.map(item => {
@@ -192,8 +178,6 @@ class ManagerApp extends React.Component {
     });
 
     return (
-
-
       <div>
         <Nav check={this.openModal} status={this.state.restaurantInfo.status} switchStatus={this.switchStatus.bind(this)}/>
         <div className="jumbotron text-center jumbotron-billboard">
@@ -212,69 +196,27 @@ class ManagerApp extends React.Component {
               <CustomerList queues={this.state.queues} addCustomer={this.addToQueue.bind(this)} removeCustomer={this.removeCustomer.bind(this)} notiCustomer={this.notiCustomer.bind(this)}/>
             </div>
           </div>
-          <Modal
-            isOpen={this.state.modalIsOpen}
-            onRequestClose={this.hideModal}
-            style={modalStyles}
-          >
-          <div >
-            {message}
-          </div>
-            <br/>
-            <div className="input-group" style={{"position": "absolute", "bottom": "0", "width": "90%"}}>
-            <input type="text" className="form-control" placeholder="chat..." aria-label="chat..." onChange={this.handleOnChange} value={this.state.input}/>
-            <span className="input-group-btn">
-            <button className="btn btn-outline-primary" type="button" onClick={this.handleOnSubmit}>Send</button>
-            <button className="btn btn-outline-primary" type="button" onClick={this.hideModal}>Close</button>
-            </span>
-
-          </div>
-
-
-          </Modal>
+            <Modal
+              isOpen={this.state.modalIsOpen}
+              onRequestClose={this.hideModal}
+              style={modalStyles}
+            >
+            <div >
+              {message}
+            </div>
+              <br/>
+              <div className="input-group" style={{"position": "absolute", "bottom": "0", "width": "90%"}}>
+              <input type="text" className="form-control" placeholder="chat..." aria-label="chat..." onChange={this.handleOnChange} value={this.state.input}/>
+              <span className="input-group-btn">
+              <button className="btn btn-outline-primary" type="button" onClick={this.handleOnSubmit}>Send</button>
+              <button className="btn btn-outline-primary" type="button" onClick={this.hideModal}>Close</button>
+              </span>
+            </div>
+            </Modal>
         </div>
-
-
-
-
-
       </div>
     );
   }
 }
-
-// const Chatbox = (props) => {
-//   <div className="panel panel-default">
-//     {props.message}
-//     <div className="input-group">
-//     <input type="text" className="form-control" placeholder="chat..." aria-label="chat..." onChange={this.handleOnChange} value={this.state.input}/>
-//     <span className="input-group-btn">
-//     <button className="btn btn-outline-primary" type="button" onClick={this.handleOnSubmit}>Send!</button>
-//     </span>
-//     </div>
-//   </div>
-// }
-
-// <nav className="navbar navbar-fixed-bottom">
-//         <div className="container">
-//
-//             <li className="nav-item">
-//               <button className="nav-link" href="#">Chat</button>
-//             </li>
-//
-//                   <div >
-//                   {message}
-//                   <div className="input-group">
-//                   <input type="text" className="form-control" placeholder="chat..." aria-label="chat..." onChange={this.handleOnChange} value={this.state.input}/>
-//                   <span className="input-group-btn">
-//                   <button className="btn btn-outline-primary" type="button" onClick={this.handleOnSubmit}>Send!</button>
-//                   </span>
-//                   </div>
-//                   </div>
-//
-//
-//         </div>
-// </nav>
-
 
 export default ManagerApp;
