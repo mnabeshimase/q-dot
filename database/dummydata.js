@@ -1,14 +1,12 @@
 const db = require('./index.js');
 const dbQuery = require('../controller/index.js');
 
-/*
 const addToQueue = () => {
-  // return dbQuery.addToQueue({name: 'Tiffany', restaurantId: 1, size: 2, mobile: '4158475697'})
-  //   .then(() => dbQuery.addToQueue({name: 'Neha', restaurantId: 1, size: 3, mobile: '4158965693', email: 'nez@gmail.com'}))
-  //   .then(() => dbQuery.addToQueue({name: 'Eugene', restaurantId: 2, size: 3, mobile: '4157855678', email: 'eugene@gmail.com'}))
-  //   .then(() => dbQuery.addToQueue({name: 'Johnny', restaurantId: 2, size: 2, mobile: '4156844758'}));
+  return dbQuery.addToQueue({name: 'Tiffany', restaurantId: 1, size: 2, mobile: '4158475697'})
+    .then(() => dbQuery.addToQueue({name: 'Neha', restaurantId: 1, size: 3, mobile: '4158965693', email: 'nez@gmail.com'}))
+    .then(() => dbQuery.addToQueue({name: 'Eugene', restaurantId: 2, size: 3, mobile: '4157855678', email: 'eugene@gmail.com'}))
+    .then(() => dbQuery.addToQueue({name: 'Johnny', restaurantId: 2, size: 2, mobile: '4156844758'}));
 };
-*/
 
 const addRestaurants = () => {
   return db.Restaurant.findOrCreate({where: {name: 'Tempest', phone: '(123) 456-7890', image: '../images/tempestbar.jpg', status: 'Open', 'average_wait': 10, 'total_wait': 10, 'type': 'bar', 'menu': 'http://www.pourguys.com/box-night-menu'}})
@@ -44,13 +42,13 @@ const dropDB = () => {
     .then(() => db.Manager.sync({force: true}))
     .then(() => db.ManagerAudit.sync({force: true}))
     .then(() => addRestaurants())
-    //.then(() => addToQueue())
+    .then(() => addToQueue())
     .then(() => addManager());
 };
 
 module.exports = {
   addRestaurants: addRestaurants,
-  //addToQueue: addToQueue,
+  addToQueue: addToQueue,
   addManager: addManager,
   dropDB: dropDB
 };

@@ -7,7 +7,7 @@ const port = process.env.PORT || 1337;
 const db = require('../database/index.js');
 const dbQuery = require('../controller/index.js');
 const dbManagerQuery = require('../controller/manager.js');
-const dummyData = require('../database/dummydata.js');
+// const dummyData = require('../database/dummydata.js');
 const helpers = require('../helpers/helpers.js');
 const bodyParser = require('body-parser');
 const session = require('express-session');
@@ -74,7 +74,7 @@ app.get('/', (req, res) => {
 });
 
 //get info for one restaurant or all restaurants
-app.get('/restaurants', (req, res) => {
+app.get('/api/restaurants', (req, res) => {
   if (req.query.restaurantId) {
     dbQuery.findInfoForOneRestaurant(req.query.restaurantId)
       .then(results => res.send(results))
@@ -150,8 +150,7 @@ app.post('/dummydata', (req, res) => {
 });
 
 //add a customer to the queue at a restaurant
-app.post('/queues', (req, res) => {
-  console.log('req body', req.body);
+app.post('/api/queues', (req, res) => {
   if (!req.body.name || !req.body.mobile || !req.body.restaurantId
       || !req.body.size) {
     res.status(400).send('Bad Request');
@@ -190,7 +189,7 @@ app.post('/queues', (req, res) => {
 });
 
 //update the status of a restaurant
-app.patch('/restaurants', (req, res) => {
+app.patch('/api/restaurants', (req, res) => {
   if (req.query.status && (req.query.status === 'Open' || req.query.status === 'Closed')) {
     dbQuery.updateRestaurantStatus(req.query)
       .then(result => res.send(`Status for restaurant with id ${req.query.restaurantId} is now ${req.query.status}`))
@@ -230,7 +229,7 @@ app.get('/queues', (req, res) => {
 });
 
 //remove customer from queue at a restaurant
-app.put('/queues', (req, res) => {
+app.put('/api/queues', (req, res) => {
   if (!req.query.queueId) {
     res.status(400).send('Bad Request');
   } else {
@@ -278,7 +277,7 @@ app.post('/manager', (req, res) => {
 });
 
 //returns manager login/logout history
-app.get('/manager/history', (req, res) => {
+app.get('/api/manager/history', (req, res) => {
   if (req.user) {
     dbManagerQuery.getAuditHistory().then(results => res.send(results));
   } else {
@@ -287,7 +286,7 @@ app.get('/manager/history', (req, res) => {
 });
 
 //deletes manager login/logout history
-app.delete('/manager/history', (req, res) => {
+app.delete('/api/manager/history', (req, res) => {
   if (req.user) {
     dbManagerQuery.deleteAuditHistory().then(results => res.send(results));
   } else {

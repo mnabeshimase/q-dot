@@ -63,16 +63,16 @@ Schema includes 3 tables shown below:
 |createdAt     |string, manager creation date     |
 |updatedAt     |string, manager updated date      |
 
-## /restaurants
+## /api/restaurants
 
 **Return a list of all the restaurants in the database**
 
-GET request to '/restaurants' returns a list of all the restaurants in the database. The list contains restaurant objects with the restaurant's id, name, phone, image and current queue count. There is a timestamp for when the restaurant was created in the database and a timestamp for the last time it was updated.
+GET request to '/api/restaurants' returns a list of all the restaurants in the database. The list contains restaurant objects with the restaurant's id, name, phone, image and current queue count. There is a timestamp for when the restaurant was created in the database and a timestamp for the last time it was updated.
 
 Example:
 
 ```
-request.get('https://q-dot.herokuapp.com/restaurants');
+request.get('https://q-dot.herokuapp.com/api/restaurants');
 
 //response
 
@@ -91,7 +91,7 @@ request.get('https://q-dot.herokuapp.com/restaurants');
         "average_wait": 3,
         //returns an integer, average wait time of restaurant
         "status": "Open",
-        //returns a string, either "Open" or "Close", reflecting 
+        //returns a string, either "Open" or "Close", reflecting
         "image": "../images/subway.jpg",
          //returns a string, url for the restaurant image
         "createdAt": "2017-10-06T19:23:08.999Z",
@@ -115,11 +115,11 @@ request.get('https://q-dot.herokuapp.com/restaurants');
 
 ```
 
-### /restaurants?restaurantId=[restaurantId]
+### /api/restaurants?restaurantId=[restaurantId]
 
 **Returns information of a selected restaurant in database, including detailed queue information**
 
-GET request to '/restaurants?restaurantId=[restaurantId]' returns information of a selected restaurant in the database, including the restaurant's id, image, name, phone, current queue count, and current queue information.
+GET request to '/api/restaurants?restaurantId=[restaurantId]' returns information of a selected restaurant in the database, including the restaurant's id, image, name, phone, current queue count, and current queue information.
 
 Current queue information includes the position, size of the group, and customer information.
 
@@ -128,7 +128,7 @@ Accepts the restaurant id as part of the query string.
 Example:
 
 ```
-request.get('https://q-dot.herokuapp.com/restaurants?restaurantId=1');
+request.get('https://q-dot.herokuapp.com/api/restaurants?restaurantId=1');
 
 //response:
 
@@ -185,16 +185,16 @@ request.get('https://q-dot.herokuapp.com/restaurants?restaurantId=1');
 
 ```
 
-### /restaurants?restaurantId=[restaurantId]&status=[status]
+### /api/restaurants?restaurantId=[restaurantId]&status=[status]
 
 **To update status of the restaurant's queue**
 
-PATCH request to /restaurants will update the status of the restaurant that indicates if it is accepting more customers to add to queue. It should always be either 'Open' or 'Closed'.
+PATCH request to /api/restaurants will update the status of the restaurant that indicates if it is accepting more customers to add to queue. It should always be either 'Open' or 'Closed'.
 
 Example:
 
 ```
-request.patch('https://q-dot.herokuapp.com/restaurants?restaurantId=1&status=Open');
+request.patch('https://q-dot.herokuapp.com/api/restaurants?restaurantId=1&status=Open');
 
 //response
 
@@ -207,11 +207,11 @@ Failed Request:
 
 ```
 
-## /queues
+## /api/queues
 
 **To add customer to a queue of a restaurant**
 
-POST request to '/queues' will add a customer to the queue of a restaurant. Expected data in request is a JSON object including the name, mobile, email (optional), size and restaurantId. 
+POST request to '/api/queues' will add a customer to the queue of a restaurant. Expected data in request is a JSON object including the name, mobile, email (optional), size and restaurantId.
 
 If the restaurant is open, the response is an object that includes the customer name, mobile, email (if provided), size, position and queueId. If the restaurant is closed, the response will be a string 'Restaurant has closed the queue.'
 
@@ -220,7 +220,7 @@ Example:
 ```
 
 requestBody = {
-    "name": "John", 
+    "name": "John",
     //name should be a string
     "mobile": "1234550284",
     //mobile should be a string
@@ -228,11 +228,11 @@ requestBody = {
     //email should be a string
     "size": 2,
     //size should be a number
-    "restaurantId": 4 
+    "restaurantId": 4
     //restaurantId should be a number
 }
 
-request.post('https://q-dot.herokuapp.com/queues', requestBody);
+request.post('https://q-dot.herokuapp.com/api/queues', requestBody);
 
 //response
 
@@ -299,7 +299,7 @@ Failed Response:
 ```
 **To remove customer from a queue of a restaurant**
 
-PUT request to '/queues?queueId=[queueId]' will remove a customer from the queue of a restaurant.
+PUT request to '/api/queues?queueId=[queueId]' will remove a customer from the queue of a restaurant.
 
 The response is a string stating the status of the change.
 
@@ -307,7 +307,7 @@ Example:
 
 ```
 
-request.put('https://q-dot.herokuapp.com/queues?queueId=1');
+request.put('https://q-dot.herokuapp.com/api/queues?queueId=1');
 
 //response
 
@@ -376,7 +376,7 @@ Successful Request:
     "size": 4,
     //returns an integer, represents the group size of the customer's reservation
     "position": 2,
-    //returns an integer, represents the queue number that was given to the customer 
+    //returns an integer, represents the queue number that was given to the customer
     "wait": 6,
     //returns an integer, represents the wait time for the customer
     "restaurant": {
@@ -457,18 +457,18 @@ Failed Request:
 400 - 'Bad Request' (if username or password is not provided)
 401 - 'Unauthorized' (if user was not authenticated)
 ```
-## GET /manager/history
+## GET /api/manager/history
 
 **To get manager login/logout history**
 
-GET request to /manager/history returns the login/logouthistory of managers for the restaurant.
+GET request to /api/manager/history returns the login/logout history of managers for the restaurant.
 
 The GET request will only work if user has been authenticated.
 
 Example:
 
 ```
-request.get('http://q-dot.herokuapp.com/manager/history');
+request.get('http://q-dot.herokuapp.com/api/manager/history');
 
 Successful Request:
 
@@ -488,11 +488,11 @@ Successful Request:
 Failed Request:
 401 - 'Unauthorized' (if user was not authenticated)
 ```
-## DELETE /manager/history
+## DELETE /api/manager/history
 
 **To delete manager login/logout history**
 
-DELETE request to /manager/history clears the login/logouthistory of managers for the restaurant.
+DELETE request to /api/manager/history clears the login/logouthistory of managers for the restaurant.
 
 The DELETE request will only work if user has been authenticated.
 
@@ -501,7 +501,7 @@ This request returns nothing.
 Example:
 
 ```
-request.delete('http://q-dot.herokuapp.com/manager/history');
+request.delete('http://q-dot.herokuapp.com/api/manager/history');
 
 Successful Request:
 null
@@ -527,7 +527,7 @@ request.post('https://q-dot.herokuapp.com/dummydata');
 
 [
     {name: 'Tempest', phone: '(123) 456-7890', image: '../images/tempest.png', 'nextPosition': 0, status: 'Open'},
-    {name: 'Subway', phone: '(123) 456-7990', image: '../images/subway.png', 'nextPosition': 0, status: 
+    {name: 'Subway', phone: '(123) 456-7990', image: '../images/subway.png', 'nextPosition': 0, status:
     'Open'},
     {name: 'Chipotle', phone: '(132) 456-7990', image: '../images/chipotle.png', 'nextPosition': 1, status: 'Closed'}
 ]
@@ -536,8 +536,8 @@ request.post('https://q-dot.herokuapp.com/dummydata');
 
 [
     {name: 'tiffany', mobile: '2345639762'},
-    {name: 'Neha', mobile: '(786) 987-4567', email: 'nez@gmail.com'}, 
-    {name: 'Eugene', mobile: '(975) 097-8967', email: 'eugene@gmail.com'}, 
+    {name: 'Neha', mobile: '(786) 987-4567', email: 'nez@gmail.com'},
+    {name: 'Eugene', mobile: '(975) 097-8967', email: 'eugene@gmail.com'},
     {name: 'Johnny', mobile: '(456) 730-5746'}
 ]
 
