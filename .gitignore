@@ -28,8 +28,12 @@ coverage
 node_modules/
 bower_components/
 
+# Database config file for Sequalize
+database/sequalize-config.js
+
+# Compiled React components
 client/dist/js/
 customerApp-bundle.js
 managerApp-bundle.js
 queueinfo-bundle.js
-
+server/server.bundle.js
