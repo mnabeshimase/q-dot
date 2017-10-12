@@ -91,6 +91,27 @@ app.get('/restaurants', (req, res) => {
   }
 });
 
+app.post('/customersignup', (req, res) => {
+  console.log(req.body);
+  var params = {};
+  var salt = dbQuery.genSalt();
+  var password = dbQuery.genPassword(req.body.password, salt);
+  params.name = req.body.firstName + ' ' + req.body.lastName;
+  params.email = req.body.email;
+  params.mobile = req.body.mobile;
+  params.passwordHash = password.passwordHash;
+  params.salt = password.salt;
+  dbQuery.findOrAddCustomerN(params)
+    .then((results) => {
+      console.log(results);
+    })
+    .catch((err) => {
+      console.log('err', err);
+      res.status(400).send('Bad save');
+    })
+  res.end();
+})
+
 //get info for one restaurant
 app.get('/restaurant/:name/:id', (req, res) => {
   dbQuery.findInfoForOneRestaurant(req.params.id)
