@@ -1,3 +1,5 @@
+const request = require('request');
+
 const changeCase = (name) => {
   return name.slice(0, 1).toUpperCase() + name.slice(1).toLowerCase();
 };
@@ -16,5 +18,6 @@ const phoneNumberFormatter = (number) => {
 
 module.exports = {
   nameFormatter: nameFormatter,
-  phoneNumberFormatter: phoneNumberFormatter
+  phoneNumberFormatter: phoneNumberFormatter,
 };
+

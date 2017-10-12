@@ -12,8 +12,14 @@ class CustomerHome extends React.Component {
     this.state = {
       selectRestaurant: false,
       currentRestaurant: {},
-      restaurantList: []
+      restaurantList: [],
+      searchText: ''
     };
+    this.filterRestaurants = this.filterRestaurants.bind(this);
+  }
+
+  filterRestaurants(e) {
+    this.setState({searchText: e.target.value});
   }
 
   componentDidMount() {
@@ -25,7 +31,8 @@ class CustomerHome extends React.Component {
       method: 'GET',
       url: '/restaurants',
       success: (data) => {
-        console.log('successfully grabbed restaurant data', data); 
+        // let filteredData = data
+        console.log('successfully grabbed restaurant data', data);
         this.setState({ restaurantList: data });
       },
       failure: (error) => {
@@ -34,13 +41,45 @@ class CustomerHome extends React.Component {
     });
   }
 
+  // searchYelp(query, callback) {
+  //   let options = {
+  //     url: `https://api.yelp.com/v3/businesses/search?term=${query}&location=San+Francisco`,
+  //     auth: {
+  //       clientid: 'xbqXaG1hQZcwXzFfTmnxuA',
+  //       clientSecret: '7PgxVEGN1jBnNTSTqNemdwJ1n0bU1eeS1JG4GWYyAvpKXqZFtTsOefIRKqs7jKDG'
+  //     }
+  //   };
+
+  //   request.get(options, (err, response, body) => {
+  //     if (err) {
+  //       console.log('Error!', err);
+  //     } else {
+  //       callback(body);
+  //     }
+  //   });
+  // }
+
   render() {
+    let filteredRestaurants = this.state.restaurantList.filter(restaurant => restaurant.type.toLowerCase().indexOf(this.state.searchText.toLowerCase()) !== -1);
+
+    let searchBarStyle = {
+      'width': '500px',
+      'height': '20px',
+      'borderRadius': '20px',
+      'border': '1px solid #ccc',
+      'margin': '30px',
+      'padding': '10px'
+    };
+
     return (
       <div className="customer-home">
         <CustomerBanner />
+        <form style={{'margin-left': '550px'}}>
+          <input placeholder="Enter Restaurants Preferences" text="search preference" style={searchBarStyle} type="text" onChange={this.filterRestaurants}/>
+        </form>
         <div className="select-restaurant-container">
           <h4>Help me queue up at...</h4>
-          {this.state.restaurantList.map(restaurant => (
+          {filteredRestaurants.map(restaurant => (
             <div key={restaurant.id}>
               <Link to={`/restaurant/${restaurant.name}/${restaurant.id}`}><RestaurantCard restaurant={restaurant}/></Link>
             </div>
