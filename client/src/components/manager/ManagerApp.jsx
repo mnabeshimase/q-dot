@@ -94,7 +94,7 @@ class ManagerApp extends React.Component {
 
   switchStatus() {
     $.ajax({
-      url: '/restaurants?restaurantId=1&status=' + (this.state.restaurantInfo.status === 'Open' ? 'Closed' : 'Open'),
+      url: '/api/restaurants?restaurantId=1&status=' + (this.state.restaurantInfo.status === 'Open' ? 'Closed' : 'Open'),
       method: 'PATCH',
       success: (data) => {
         console.log(data);
@@ -132,7 +132,7 @@ class ManagerApp extends React.Component {
   removeCustomer(queueId) {
     console.log(queueId);
     $.ajax({
-      url: '/queues?queueId=' + queueId,
+      url: '/api/queues?queueId=' + queueId,
       method: 'PUT',
       success: (data) => {
         console.log(data);

@@ -16,7 +16,7 @@ class ManagerAudit extends React.Component {
   getAuditHistory() {
     var self = this;
     $.ajax({
-      url: '/manager/history',
+      url: '/api/manager/history',
       method: 'GET',
       success: function(data) {
         self.setState({
@@ -32,7 +32,7 @@ class ManagerAudit extends React.Component {
   clearAuditHistory() {
     var self = this;
     $.ajax({
-      url: '/manager/history',
+      url: '/api/manager/history',
       method: 'DELETE',
       success: function(data) {
         console.log(data);

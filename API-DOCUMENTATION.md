@@ -63,7 +63,7 @@ Schema includes 3 tables shown below:
 |createdAt     |string, manager creation date     |
 |updatedAt     |string, manager updated date      |
 
-## /restaurants
+## /api/restaurants
 
 **Return a list of all the restaurants in the database**
 
@@ -185,16 +185,16 @@ request.get('https://q-dot.herokuapp.com/api/restaurants?restaurantId=1');
 
 ```
 
-### /restaurants?restaurantId=[restaurantId]&status=[status]
+### /api/restaurants?restaurantId=[restaurantId]&status=[status]
 
 **To update status of the restaurant's queue**
 
-PATCH request to /restaurants will update the status of the restaurant that indicates if it is accepting more customers to add to queue. It should always be either 'Open' or 'Closed'.
+PATCH request to /api/restaurants will update the status of the restaurant that indicates if it is accepting more customers to add to queue. It should always be either 'Open' or 'Closed'.
 
 Example:
 
 ```
-request.patch('https://q-dot.herokuapp.com/restaurants?restaurantId=1&status=Open');
+request.patch('https://q-dot.herokuapp.com/api/restaurants?restaurantId=1&status=Open');
 
 //response
 
@@ -299,7 +299,7 @@ Failed Response:
 ```
 **To remove customer from a queue of a restaurant**
 
-PUT request to '/queues?queueId=[queueId]' will remove a customer from the queue of a restaurant.
+PUT request to '/api/queues?queueId=[queueId]' will remove a customer from the queue of a restaurant.
 
 The response is a string stating the status of the change.
 
@@ -307,7 +307,7 @@ Example:
 
 ```
 
-request.put('https://q-dot.herokuapp.com/queues?queueId=1');
+request.put('https://q-dot.herokuapp.com/api/queues?queueId=1');
 
 //response
 
@@ -457,18 +457,18 @@ Failed Request:
 400 - 'Bad Request' (if username or password is not provided)
 401 - 'Unauthorized' (if user was not authenticated)
 ```
-## GET /manager/history
+## GET /api/manager/history
 
 **To get manager login/logout history**
 
-GET request to /manager/history returns the login/logouthistory of managers for the restaurant.
+GET request to /api/manager/history returns the login/logout history of managers for the restaurant.
 
 The GET request will only work if user has been authenticated.
 
 Example:
 
 ```
-request.get('http://q-dot.herokuapp.com/manager/history');
+request.get('http://q-dot.herokuapp.com/api/manager/history');
 
 Successful Request:
 
@@ -488,11 +488,11 @@ Successful Request:
 Failed Request:
 401 - 'Unauthorized' (if user was not authenticated)
 ```
-## DELETE /manager/history
+## DELETE /api/manager/history
 
 **To delete manager login/logout history**
 
-DELETE request to /manager/history clears the login/logouthistory of managers for the restaurant.
+DELETE request to /api/manager/history clears the login/logouthistory of managers for the restaurant.
 
 The DELETE request will only work if user has been authenticated.
 
@@ -501,7 +501,7 @@ This request returns nothing.
 Example:
 
 ```
-request.delete('http://q-dot.herokuapp.com/manager/history');
+request.delete('http://q-dot.herokuapp.com/api/manager/history');
 
 Successful Request:
 null
