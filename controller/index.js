@@ -201,7 +201,7 @@ module.exports = {
   findInfoForOneRestaurant: findInfoForOneRestaurant,
   findOrAddCustomer: findOrAddCustomer,
   findOrAddCustomerN: findOrAddCustomerN,
-  //addToQueue: addToQueue,
+  addToQueue: addToQueue,
   updateRestaurantStatus: updateRestaurantStatus,
   getQueueInfo: getQueueInfo,
   getCustomerInfo: getCustomerInfo,
