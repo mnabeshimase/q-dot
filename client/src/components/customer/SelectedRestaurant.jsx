@@ -4,11 +4,14 @@ import CustomerInfoForm from './CustomerInfoForm.jsx';
 import QueueInfo from './QueueInfo.jsx';
 import RestaurantInformation from './RestaurantInformation.jsx';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+
 
 class SelectedRestaurant extends React.Component {
   constructor(props) {
     super(props);
     this.customerInfoSubmitted = this.customerInfoSubmitted.bind(this);
+    this.getMenu = this.getMenu.bind(this);
     this.state = {
       currentRestaurant: {queues: []},
       infoSubmitted: false,
@@ -23,20 +26,14 @@ class SelectedRestaurant extends React.Component {
   }
 
   getRestaurant() {
-    let windowUrl = window.location.href;
-    let id = windowUrl.slice(-1);
-
-    $.ajax({
-      method: 'GET',
-      url: `/restaurants?restaurantId=${id}`,
-      success: (data) => {
+    let id = this.props.location.pathname.slice(-1);
+    axios.get(`/restaurants?restaurantId=${id}`)
+      .then(({ data }) => {
         console.log('successfully grabbed current restaurant data', data);
         this.setState({ currentRestaurant: data });
-      },
-      failure: (error) => {
+      }, (error) => {
         console.log('failed to grab current restaurant data', error);
-      }
-    });
+      });
   }
 
   customerInfoSubmitted(id, position) {
@@ -47,20 +44,23 @@ class SelectedRestaurant extends React.Component {
     });
   }
 
+  getMenu(e) {
+    console.log(e);
+    window.open(this.state.currentRestaurant.menu, '_blank');
+  }
+
   render() {
     const restaurantImg = {
-      backgroundImage: `url(../${this.state.currentRestaurant.image})`
+      backgroundImage: `url(../${this.props.currentRestaurant ? this.props.currentRestaurant.image : this.state.currentRestaurant.image})`
     };
 
     return (
       <div className="selected-restaurant">
         <RestaurantLogoBanner style={restaurantImg} />
-        <RestaurantInformation restaurant={this.state.currentRestaurant}/>
+        <RestaurantInformation restaurant={this.props.currentRestaurant || this.state.currentRestaurant}/>
         <CustomerInfoForm customerInfoSubmitted={this.customerInfoSubmitted} />
 
-        <span style={{'margin': '-140px 0 0 375px'}} className="waves-effect waves-light btn" onClick={() =>
-          window.open(this.state.currentRestaurant.menu, '_blank')
-        }> Menu </span>
+        <span style={{'margin': '-140px 0 0 375px'}} className="waves-effect waves-light btn" onClick={this.getMenu}> Menu </span>
       </div>
     );
   }
