@@ -52,7 +52,8 @@ const Customer = db.define('customer', {
     allowNull: false
   },
   email: Sequelize.STRING,
-  password: Sequelize.STRING
+  passwordHash: Sequelize.STRING,
+  salt: Sequelize.STRING
 });
 //password / hash;
 

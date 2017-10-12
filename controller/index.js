@@ -1,6 +1,21 @@
 const db = require('../database/index.js');
 const { ne, lt, gt } = db.Sequelize.Op;
 const helpers = require('../helpers/helpers.js');
+const crypto = require('crypto');
+
+const genSalt = function() {
+  return crypto.randomBytes(16).toString('hex');
+};
+
+const genPassword = function(password, salt) {
+  var passwordHash = crypto.createHmac('sha512', salt);
+  passwordHash.update(password);
+  passwordHash = passwordHash.digest('hex');
+  return {
+    passwordHash: passwordHash,
+    salt: salt
+  };
+};
 
 //find info for one restaurant with current queue information
 const findInfoForOneRestaurant = (restaurantId) => {
@@ -66,7 +81,8 @@ const findOrAddCustomerN = (params) => {
           name: helpers.nameFormatter(params.name),
           mobile: helpers.phoneNumberFormatter(params.mobile)
         };
-        customer.password = params.password;
+        customer.passwordHash = params.passwordHash;
+        customer.salt = params.salt;
         if (params.email) {
           customer.email = params.email;
         }
@@ -187,5 +203,7 @@ module.exports = {
   getQueueInfo: getQueueInfo,
   getCustomerInfo: getCustomerInfo,
   getManagerInfo: getManagerInfo,
-  removeFromQueue: removeFromQueue
+  removeFromQueue: removeFromQueue,
+  genSalt: genSalt,
+  genPassword: genPassword
 };
