@@ -30,7 +30,7 @@ class CustomerLogin extends React.Component {
       url: `/customerlogin?username=${this.state.username}&password=${this.state.password}`,
       method: 'POST',
       success: (data) => {
-        self.setState({
+        this.setState({
           unauthorised: false
         });
         window.location.href = data;

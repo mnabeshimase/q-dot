@@ -34,7 +34,7 @@ class CustomerSignUp extends React.Component {
       method: 'POST',
       data: data,
       success: (data) => {
-        self.setState({
+        this.setState({
           unauthorised: false
         });
         window.location.href = data;
