@@ -10,7 +10,8 @@ class CustomerSignUp extends React.Component {
       firstName: '',
       lastName: '',
       phoneNumber: '',
-      password: ''
+      password: '',
+      username: ''
   	}
   }
 
