@@ -16,12 +16,17 @@ describe('<CustomerHome/>', () => {
     expect(wrapper.find('.customer-home')).to.have.length(1);
     expect(wrapper.find('.select-restaurant-container')).to.have.length(1);
   });
-  it('responds to user input', () => {
+  it('should respond to user input for filtering restaurants', () => {
+    const handleChangeSpy = spy(CustomerHome.prototype, 'filterRestaurants');
+    const event = {target: {value: 'random'}};
     const wrapper = mount(<CustomerHome/>);
+    wrapper.find('input').simulate('change', event);
+    expect(handleChangeSpy.calledOnce).to.equal(true);
     wrapper.find('input').simulate('change', {target: {value: 'sushi'}});
     expect(wrapper.state().searchText).to.equal('sushi');
+
   });
-  it('calls componentDidMount', () => {
+  it('should call componentDidMount', () => {
     beforeEach(() => {
       const componentDidMountSpy = spy(CustomerHome.prototype, 'componentDidMount');
       const wrapper = mount(<CustomerHome/>);
