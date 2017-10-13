@@ -127,7 +127,7 @@ export default class QueueInfo extends React.Component {
       failure: (error) => {
         console.log('failed to remove customer from queue', error);
       }
-  
+
     });
   }
 
@@ -178,10 +178,10 @@ export default class QueueInfo extends React.Component {
           </div>
           </Modal>
         </div>
-        <div> 
-          <button onClick={(e)=> this.removeFromQueue(e)}>
-            remove yo'self from da que
-          </button>
+        <div className="row">
+          <a className="waves-effect waves-light btn" onClick={(e)=> this.removeFromQueue(e)}>
+            <i className="material-icons left">cancel</i>Cancel reservaton
+          </a>
         </div>
         <br/>
       </div>
