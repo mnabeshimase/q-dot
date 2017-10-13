@@ -112,7 +112,6 @@ describe ('Restaurant API routes', function() {
 
   describe ('POST request to /customersignup', function() {
     it ('should add a user to the database on sign up', function(done) {
-      let cookieJar = rp.jar();
       rp({
         uri: `${serverURL}/customersignup`,
         method: 'POST',
@@ -122,18 +121,13 @@ describe ('Restaurant API routes', function() {
           mobile: '911',
           email: 'cool@school',
           password: 'fun'
-        },
-        qs: {
-          username: '',
-          password: 'fun'
-        },
-        jar: cookieJar
+        }
       })
-      .then(() => db.Customer.findById(5))
-      .then((customer) => {
-        expect(customer.dataValues.mobile).to.equal('911');
-        done();
-      })
+        .then(() => db.Customer.findById(5))
+        .then((customer) => {
+          expect(customer.dataValues.mobile).to.equal('911');
+          done();
+        })
     });
   })
   
