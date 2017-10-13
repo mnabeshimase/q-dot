@@ -11,6 +11,7 @@ class CustomerInfoForm extends React.Component {
     this.getLastName = this.getLastName.bind(this);
     this.getMobile = this.getMobile.bind(this);
     this.getEmail = this.getEmail.bind(this);
+    this.getCustomerMessage = this.getCustomerMessage.bind(this);
     this.submitCustomerInfo = this.submitCustomerInfo.bind(this);
     this.state = {
       groupSize: 0,
@@ -18,6 +19,7 @@ class CustomerInfoForm extends React.Component {
       customerLastName: '',
       customerMobile: '',
       customerEmail: '',
+      customerMessage: '',
       currentRestaurantId: this.props.currentRestaurantId,
     };
   }
@@ -59,6 +61,12 @@ class CustomerInfoForm extends React.Component {
     });
   }
 
+  getCustomerMessage(event) {
+    this.setState({
+      customerMessage: event.target.value
+    });
+  }
+
   submitCustomerInfo() {
     let fullName = `${this.state.customerFirstName} ${this.state.customerLastName}`;
     let windowUrl = window.location.href;
@@ -71,6 +79,7 @@ class CustomerInfoForm extends React.Component {
         name: fullName,
         mobile: this.state.customerMobile,
         email: this.state.customerEmail,
+        customerMessage: this.state.customerMessage,
         size: this.state.groupSize,
         restaurantId: id
       }),
@@ -94,23 +103,29 @@ class CustomerInfoForm extends React.Component {
           <div className="row">
             <div className="input-field col s6">
               <input id="first_name" type="text" className="validate" onChange={this.getFirstName} required/>
-              <label htmlFor="first_name" data-error="wrong" data-success="right">First Name</label>
+              <label htmlFor="first_name">First Name</label>
             </div>
             <div className="input-field col s6">
               <input id="last_name" type="text" className="validate" onChange={this.getLastName} required/>
-              <label htmlFor="last_name" data-error="wrong" data-success="right">Last Name</label>
+              <label htmlFor="last_name">Last Name</label>
             </div>
           </div>
           <div className="row">
             <div className="input-field col s12">
               <input id="telephone" type="tel" className="validate" onChange={this.getMobile} required/>
-              <label htmlFor="telephone" data-error="wrong" data-success="right">Phone Number</label>
+              <label htmlFor="telephone">Phone Number</label>
             </div>
           </div>
           <div className="row">
             <div className="input-field col s12">
               <input id="email" type="email" className="validate" onChange={this.getEmail}/>
-              <label htmlFor="email" data-error="wrong" data-success="right">Email</label>
+              <label htmlFor="email">Email</label>
+            </div>
+          </div>
+          <div className="row">
+            <div className="input-field col s12">
+              <textarea id="message" className="materialize-textarea" data-length="250" onChange={this.getCustomerMessage}></textarea>
+              <label htmlFor="message">Add a special request (optional)</label>
             </div>
           </div>
           <div className="row">

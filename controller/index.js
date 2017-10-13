@@ -115,6 +115,7 @@ const getQueueInfo = (restaurantId, customerId, customerPosition) => {
 const addToQueue = (params) => {
   const queueInfo = {
     size: params.size,
+    customer_message: params.customerMessage
   };
   const response = {};
 
