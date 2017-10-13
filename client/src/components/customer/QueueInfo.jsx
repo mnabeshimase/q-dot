@@ -177,7 +177,6 @@ export default class QueueInfo extends React.Component {
         </div>
         <div>
           <a className="waves-effect waves-light btn" onClick={this.removeFromQueue}>
-            <i class="material-icons left">cancel</i>
             Cancel reservation
           </a>
         </div>
