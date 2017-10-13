@@ -1,4 +1,4 @@
-const expect = require('chai').expect
+const expect = require('chai').expect;
 const { Client } = require('pg');
 const request = require('request');
 const rp = require('request-promise');
@@ -10,7 +10,7 @@ describe ('Restaurant API routes', function() {
   //drops database and recreates a new one with dummy data
   beforeEach(function(done) {
     dummyData.dropDB()
-    .then(() => done());
+      .then(() => done());
   });
 
   describe ('GET request to /api/restaurants', function() {
@@ -20,13 +20,13 @@ describe ('Restaurant API routes', function() {
         method: 'GET',
         json: true
       })
-      .then((results) => {
-        expect(results.length).to.equal(9);
-        expect(results[0].name).to.equal('Tempest');
-        expect(results[1].status).to.equal('Open');
-        expect(results[2].phone).to.equal('(415) 567-7664');
-        done();
-      });
+        .then((results) => {
+          expect(results.length).to.equal(9);
+          expect(results[0].name).to.equal('Tempest');
+          expect(results[1].status).to.equal('Open');
+          expect(results[2].phone).to.equal('(415) 567-7664');
+          done();
+        });
     });
   });
 
@@ -47,28 +47,28 @@ describe ('Restaurant API routes', function() {
     it ('should insert a new row into queues table', function(done) {
       let oldQueueCount;
       db.Queue.count()
-      .then((results) => {
-        oldQueueCount = results;
-        return rp({
-          uri: `${serverURL}/api/queues`,
-          method: 'POST',
-          json: {
-            name: 'Example User',
-            mobile: '(123) 456-7890',
-            email: 'example@email.com',
-            size: 2,
-            restaurantId: 1
-          }
+        .then((results) => {
+          oldQueueCount = results;
+          return rp({
+            uri: `${serverURL}/api/queues`,
+            method: 'POST',
+            json: {
+              name: 'Example User',
+              mobile: '(123) 456-7890',
+              email: 'example@email.com',
+              size: 2,
+              restaurantId: 1
+            }
+          });
+        })
+        .then(() => {
+          return db.Queue.count();
+        })
+        .then((results) => {
+          let newQueueCount = results;
+          expect(newQueueCount).to.be.above(oldQueueCount);
+          done();
         });
-      })
-      .then(() => {
-        return db.Queue.count()
-      })
-      .then((results) => {
-        let newQueueCount = results;
-        expect(newQueueCount).to.be.above(oldQueueCount);
-        done();
-      });
     });
     it ('should accept an optional message from customer', function(done) {
       rp({
@@ -102,11 +102,11 @@ describe ('Restaurant API routes', function() {
           status: 'Closed'
         }
       })
-      .then(() => db.Restaurant.findById(1))
-      .then((results) => {
-        expect(results.dataValues.status).to.equal('Closed');
-        done()
-      });
+        .then(() => db.Restaurant.findById(1))
+        .then((results) => {
+          expect(results.dataValues.status).to.equal('Closed');
+          done();
+        });
     });
   });
 
@@ -172,12 +172,12 @@ describe ('Restaurant API routes', function() {
           queueId: 1
         }
       })
-      .then(() => db.Queue.findById(1))
-      .then((results) => {
-        expect(results.dataValues.wait).to.be.null;
-        expect(results.dataValues.position).to.be.null;
-        done()
-      });
+        .then(() => db.Queue.findById(1))
+        .then((results) => {
+          expect(results.dataValues.wait).to.be.null;
+          expect(results.dataValues.position).to.be.null;
+          done();
+        });
     });
   });
 
@@ -198,24 +198,24 @@ describe ('Restaurant API routes', function() {
           method: 'GET',
           jar: cookieJar,
           json: true
-        })
+        });
       })
-      .then((results) => {
-        expect(results).to.be.a('array');
-        expect(results[0].type).to.equal('LOGIN');
-        expect(results[0].manager.username).to.equal('johnny');
-        done()
-      });
+        .then((results) => {
+          expect(results).to.be.a('array');
+          expect(results[0].type).to.equal('LOGIN');
+          expect(results[0].manager.username).to.equal('johnny');
+          done();
+        });
     });
     it ('should return 401 status code for unauthorized user', function(done) {
       rp({
         uri: `${serverURL}/api/manager/history`,
         method: 'GET'
       })
-      .catch((err) => {
-        expect(err.statusCode).to.equal(401);
-        done()
-      });
+        .catch((err) => {
+          expect(err.statusCode).to.equal(401);
+          done();
+        });
     });
   });
 
@@ -232,32 +232,32 @@ describe ('Restaurant API routes', function() {
           password: 'hunter2'
         }
       })
-      .then(() => db.ManagerAudit.count())
-      .then((results) => {
-        numQueuesBeforeDeletion = results;
-        return rp({
-          uri: `${serverURL}/api/manager/history`,
-          method: 'DELETE',
-          jar: cookieJar,
-          json: true
+        .then(() => db.ManagerAudit.count())
+        .then((results) => {
+          numQueuesBeforeDeletion = results;
+          return rp({
+            uri: `${serverURL}/api/manager/history`,
+            method: 'DELETE',
+            jar: cookieJar,
+            json: true
+          });
         })
-      })
-      .then(() => db.ManagerAudit.count())
-      .then((results) => {
-        let numQueuesAfterDeletion = results;
-        expect(numQueuesBeforeDeletion).to.be.above(numQueuesAfterDeletion)
-        done()
-      });
+        .then(() => db.ManagerAudit.count())
+        .then((results) => {
+          let numQueuesAfterDeletion = results;
+          expect(numQueuesBeforeDeletion).to.be.above(numQueuesAfterDeletion);
+          done();
+        });
     });
     it ('should return 401 status code for unauthorized user', function(done) {
       rp({
         uri: `${serverURL}/api/manager/history`,
         method: 'DELETE'
       })
-      .catch((err) => {
-        expect(err.statusCode).to.equal(401);
-        done()
-      });
+        .catch((err) => {
+          expect(err.statusCode).to.equal(401);
+          done();
+        });
     });
   });
 });
