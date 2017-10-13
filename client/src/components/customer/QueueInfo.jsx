@@ -60,6 +60,7 @@ export default class QueueInfo extends React.Component {
 
     this.handleOnSubmit = this.handleOnSubmit.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
+    this.removeFromQueue = this.removeFromQueue.bind(this);
     this.openModal = this.openModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
   }
@@ -109,12 +110,9 @@ export default class QueueInfo extends React.Component {
       }
     });
   }
-  removeFromQueue(e) {
+  removeFromQueue() {
     let windowUrl = window.location.href;
     let id = windowUrl.slice(-1);
-    console.log(id)
-
-    e.preventDefault();
     $.ajax({
       method: 'DELETE',
       url: `/queues?queueId=${id}`,
@@ -127,7 +125,6 @@ export default class QueueInfo extends React.Component {
       failure: (error) => {
         console.log('failed to remove customer from queue', error);
       }
-  
     });
   }
 
@@ -178,10 +175,11 @@ export default class QueueInfo extends React.Component {
           </div>
           </Modal>
         </div>
-        <div> 
-          <button onClick={(e)=> this.removeFromQueue(e)}>
-            remove yo'self from da que
-          </button>
+        <div>
+          <a className="waves-effect waves-light btn" onClick={this.removeFromQueue}>
+            <i class="material-icons left">cancel</i>
+            Cancel reservation
+          </a>
         </div>
         <br/>
       </div>
