@@ -105,12 +105,12 @@ app.post('/customersignup', (req, res) => {
   dbQuery.findOrAddCustomerN(params)
     .then((results) => {
       console.log(results);
+      res.end();
     })
     .catch((err) => {
       console.log('err', err);
       res.status(400).send('Bad save');
     })
-  res.end();
 })
 
 //get info for one restaurant
