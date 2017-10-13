@@ -87,6 +87,7 @@ class SignUp extends React.Component {
           <input 
             value={this.state.firstName} 
             type='username'
+            id='first_name'
             className='form-control'
             placeholder='First Name'
             data-error="wrong" data-success="right"
@@ -97,6 +98,7 @@ class SignUp extends React.Component {
           <input 
             value={this.state.lastName}
             type='username'
+            id='last_name'
             className='form-control'
             placeholder='Last Name'
             data-error="wrong" data-success="right"
@@ -106,6 +108,7 @@ class SignUp extends React.Component {
           <input 
             value={this.state.phoneNumber}
             type='username'
+            id='phone_number'
             className='form-control'
             placeholder='phoneNumber'
             data-error="wrong" data-success="right"
@@ -118,6 +121,7 @@ class SignUp extends React.Component {
           <input 
             value={this.state.email}
             type='email'
+            id='email'
             className='form-control'
             placeholder='email'
             required autoFocus
@@ -126,6 +130,7 @@ class SignUp extends React.Component {
           <input 
             value={this.state.password}
             type='password'
+            id='password'
             className='form-control'
             placeholder='password'
             data-error="wrong" data-success="right"

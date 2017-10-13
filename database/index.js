@@ -105,11 +105,6 @@ const Restaurant = db.define('restaurant', {
 });
 
 const LongTerm = db.define('longterm', {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
   'restaurant_id': Sequelize.INTEGER,
   wait: {
     type: Sequelize.INTEGER,
@@ -119,6 +114,18 @@ const LongTerm = db.define('longterm', {
   hour: Sequelize.INTEGER,
   'average_wait': Sequelize.ARRAY(Sequelize.INTEGER)
 });
+
+const ShortTerm = db.define('shortterm', {
+  restaurant_id: Sequelize.INTEGER,
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  dayInWeek: Sequelize.STRING,
+  hour: Sequelize.STRING,
+  average_wait: Sequelize.ARRAY(Sequelize.INTEGER)
+})
 
 // Relationship between Restaurant & Queue
 Restaurant.hasMany(Queue);
@@ -132,9 +139,13 @@ Queue.belongsTo(Customer);
 Manager.hasOne(ManagerAudit);
 ManagerAudit.belongsTo(Manager);
 
+ST.hasOne(Queue);
+Queue.belongsTo(ST);
+
 Customer.sync()
   .then(() => Restaurant.sync())
   .then(() => Queue.sync())
+  .then(() => ShortTerm.sync())
   .catch(error => console.log('error syncing data'));
 
 module.exports = {
@@ -146,4 +157,5 @@ module.exports = {
   Manager: Manager,
   ManagerAudit: ManagerAudit,
   LongTerm: LongTerm
+  ShortTerm: ShortTerm
 };
