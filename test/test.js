@@ -12,7 +12,7 @@ describe ('Restaurant API routes', function() {
     dummyData.dropDB()
       .then(() => done());
   });
-
+ 
   describe ('GET request to /api/restaurants', function() {
     it ('should return a list of restaurants', function(done) {
       rp({
@@ -110,6 +110,27 @@ describe ('Restaurant API routes', function() {
     });
   });
 
+  describe ('POST request to /customersignup', function() {
+    it ('should add a user to the database on sign up', function(done) {
+      rp({
+        uri: `${serverURL}/customersignup`,
+        method: 'POST',
+        json: {
+          firstName: 'austin',
+          lastName: 'brett',
+          mobile: '911',
+          email: 'cool@school',
+          password: 'fun'
+        }
+      })
+        .then(() => db.Customer.findById(5))
+        .then((customer) => {
+          expect(customer.dataValues.mobile).to.equal('911');
+          done();
+        })
+    });
+  })
+  
   describe ('DELETE request to /queues', function() {
     it ('should dequeue customer dequeued in the queue table', function(done) {
       let cookieJar = rp.jar();
@@ -218,7 +239,7 @@ describe ('Restaurant API routes', function() {
         });
     });
   });
-
+  
   describe ('DELETE request to /api/manager/history', function() {
     it ('should delete login/logout history of managers for the restaurant', function(done) {
       let cookieJar = rp.jar();
