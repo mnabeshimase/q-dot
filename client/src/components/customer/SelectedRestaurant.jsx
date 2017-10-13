@@ -45,18 +45,15 @@ class SelectedRestaurant extends React.Component {
   }
 
   getMenu(e) {
-    console.log(e);
     window.open(this.state.currentRestaurant.menu, '_blank');
   }
 
   render() {
-    const restaurantImg = {
-      backgroundImage: `url(../${this.props.currentRestaurant ? this.props.currentRestaurant.image : this.state.currentRestaurant.image})`
-    };
-
     return (
       <div className="selected-restaurant">
-        <RestaurantLogoBanner style={restaurantImg} />
+        {this.state.currentRestaurant.image ?
+          <RestaurantLogoBanner style={{backgroundImage: `url(/images/${this.state.currentRestaurant.image})`}} /> : undefined
+        }
         <RestaurantInformation restaurant={this.props.currentRestaurant || this.state.currentRestaurant}/>
         <CustomerInfoForm customerInfoSubmitted={this.customerInfoSubmitted} />
 
