@@ -43,20 +43,11 @@ class CustomerHome extends React.Component {
   render() {
     let filteredRestaurants = this.state.restaurantList.filter(restaurant => restaurant.type.toLowerCase().indexOf(this.state.searchText.toLowerCase()) !== -1);
 
-    let searchBarStyle = {
-      'width': '500px',
-      'height': '20px',
-      'borderRadius': '20px',
-      'border': '1px solid #ccc',
-      'margin': '30px',
-      'padding': '10px'
-    };
-
     return (
       <div className="customer-home">
         <CustomerBanner />
-        <form style={{'margin-left': '550px'}}>
-          <input placeholder="Enter Restaurants Preferences" text="search preference" style={searchBarStyle} type="text" onChange={this.filterRestaurants}/>
+        <form className="container">
+          <input placeholder="Enter Restaurants Preferences" text="search preference" type="text" onChange={this.filterRestaurants}/>
         </form>
         <div className="select-restaurant-container">
           <h4>Help me queue up at...</h4>

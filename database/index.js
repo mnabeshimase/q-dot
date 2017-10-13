@@ -119,7 +119,7 @@ ManagerAudit.belongsTo(Manager);
 Customer.sync()
   .then(() => Restaurant.sync())
   .then(() => Queue.sync())
-  .catch(error => console.log('error syncing data', error));
+  .catch(error => console.log('error syncing data'));
 
 module.exports = {
   Sequelize: Sequelize,

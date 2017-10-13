@@ -9,13 +9,13 @@ class CustomerApp extends React.Component {
     super(props);
   }
   render() {
-    return(
+    return (
       <div>
         <CustomerNav />
         <CustomerMain currentRestaurant={this.props.currentRestaurant}/>
       </div>
-    )
+    );
   }
-};
+}
 
 export default CustomerApp;
