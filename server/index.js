@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 //checks if session already exists, if it does, adds req.session to req object
 app.use(session({
   store: new RedisStore({
-    host: process.env.REDISURL || '198.199.103.230',
+    host: process.env.REDISURL || "46.101.225.211",
     port: process.env.REDISPORT || 6379
   }),
   secret: process.env.SESSIONSECRET || 'teambeam',
