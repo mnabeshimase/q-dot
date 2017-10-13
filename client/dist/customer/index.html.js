@@ -1,7 +1,7 @@
 module.exports = function(options) {
-  return (
-    `<!DOCTYPE html>
-    <html>
+  return (`
+    <!DOCTYPE html>
+      <html>
       <head>
         <!--Import Google Icon Font-->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -17,19 +17,18 @@ module.exports = function(options) {
       </head>
 
       <body>
-        <div id='app'>
-        </div>
-          ${options.component}
-          <!--Import jQuery before materialize.js-->
-          <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-          <script type="text/javascript" src="/customer/js/materialize.min.js"></script>
-        </body>
+        <div id='app'>${options.component}</div>
+        <script src='/js/customerApp-bundle.js'></script>
+        <!--Import jQuery before materialize.js-->
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="/customer/js/materialize.min.js"></script>
+      </body>
 
-        <footer>
-          <br><br><br>
-          <hr>
-          by eggs-coffee-toast
-        </footer>
+      <footer>
+        <br><br><br>
+        <hr>
+        by eggs-coffee-toast
+      </footer>
     </html>`
   )
 }

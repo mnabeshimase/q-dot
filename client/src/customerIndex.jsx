@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import CustomerApp from './components/customer/CustomerApp.jsx';
 import { BrowserRouter } from 'react-router-dom';
 
-ReactDOM.render((
+ReactDOM.hydrate((
   <BrowserRouter>
     <CustomerApp />
   </BrowserRouter>
