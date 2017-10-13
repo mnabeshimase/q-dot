@@ -3,6 +3,7 @@ module.exports = function(options) {
     <!DOCTYPE html>
       <html>
       <head>
+        <link rel="icon" type="image/png" href="/favicon.png" />
         <!--Import Google Icon Font-->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <!--Import customermain.css-->

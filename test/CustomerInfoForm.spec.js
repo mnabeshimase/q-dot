@@ -45,10 +45,9 @@ describe('<CustomerInfoForm/>', () => {
   it('should call submitCustomerInfo the method on click', () => {
     const handleClickSpy = spy(CustomerInfoForm.prototype, 'submitCustomerInfo');
     const wrapper = mount(<CustomerInfoForm/>);
-    wrapper.find('.btn').simulate('click');
+    wrapper.find('[type="submit"]').simulate('click');
     expect(handleClickSpy.calledOnce).to.equal(true);
-    wrapper.find('.btn').simulate('click');
+    wrapper.find('[type="submit"]').simulate('click');
     expect(handleClickSpy.calledTwice).to.equal(true);
   });
 });
-
