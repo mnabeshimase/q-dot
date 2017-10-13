@@ -245,6 +245,24 @@ app.put('/api/queues', (req, res) => {
   }
 });
 
+app.delete('/queues', (req, res) => {
+
+  req.session.destroy(function (err) {
+    //res.end();
+    dbQuery.removeFromQueue(req.query.queueId)
+      .then(result => res.send(result))
+      .catch(err => {
+        if (err.message.includes('removed')) {
+          res.send(err.message);
+        } else {
+          console.log('error when removing from queue', err);
+          res.status(418).send('Request Failed');
+        }
+      });
+  });
+
+});
+
 //login a manager for a restaurant
 app.post('/managerlogin', passport.authenticate('local'), (req, res) => {
   dbManagerQuery.addAuditHistory('LOGIN', req.user.id)

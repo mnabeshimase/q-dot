@@ -110,6 +110,59 @@ describe ('Restaurant API routes', function() {
     });
   });
 
+  describe ('DELETE request to /queues', function() {
+    it ('should dequeue customer dequeued in the queue table', function(done) {
+      let cookieJar = rp.jar();
+      let cookieJar2 = rp.jar();
+      rp({
+        uri: `${serverURL}/api/queues`,
+        method: 'POST',
+        json: {
+          name: 'test',
+          mobile: '911',
+          email: 'gotcha@snap',
+          size: 2,
+          restaurantId: 1
+        },
+        jar: cookieJar
+      })
+      .then(() => {
+        return rp({
+          uri: `${serverURL}/api/queues`,
+          method: 'POST',
+          json: {
+            name: 'test2',
+            mobile: '922',
+            email: 'gotcha2@snap2',
+            size: 2,
+            restaurantId: 1
+          },
+          jar: cookieJar2
+        })
+      })
+      .then(() => {
+        return rp({
+          uri: `${serverURL}/queues`,
+          method: 'DELETE',
+          qs: {
+            queueId: 5,
+          },
+          jar: cookieJar
+        })
+      })
+      .then(() => db.Queue.findById(5))
+      .then((results) => {
+        expect(results.dataValues.wait).to.be.null;
+        expect(results.dataValues.position).to.be.null;
+        return db.Queue.findById(6);
+      })
+      .then((results)=>{
+        expect(results.dataValues.position).to.equal(3);
+        done();
+      })
+    });
+  });
+
   describe ('PUT request to /api/queues', function() {
     it ('should remove a customer from the queue of the rastaurant', function(done) {
       rp({

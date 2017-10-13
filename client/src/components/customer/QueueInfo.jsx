@@ -109,6 +109,27 @@ export default class QueueInfo extends React.Component {
       }
     });
   }
+  removeFromQueue(e) {
+    let windowUrl = window.location.href;
+    let id = windowUrl.slice(-1);
+    console.log(id)
+
+    e.preventDefault();
+    $.ajax({
+      method: 'DELETE',
+      url: `/queues?queueId=${id}`,
+      success: (data) => {
+        console.log(data);
+
+        // report queueId to server socket
+        this.socket.emit('customer report', id);
+      },
+      failure: (error) => {
+        console.log('failed to remove customer from queue', error);
+      }
+  
+    });
+  }
 
   render() {
     const messages = this.state.messages;
@@ -157,6 +178,12 @@ export default class QueueInfo extends React.Component {
           </div>
           </Modal>
         </div>
+        <div> 
+          <button onClick={(e)=> this.removeFromQueue(e)}>
+            remove yo'self from da que
+          </button>
+        </div>
+        <br/>
       </div>
     );
   }

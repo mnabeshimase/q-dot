@@ -184,6 +184,7 @@ const removeFromQueue = (queueId) => {
   let restaurant;
   return db.Queue.find({where: {id: queueId}, include: [db.Restaurant]})
     .then(row => {
+      console.log('row', row)
       if (!row.position && !row.wait) {
         throw new Error('Already removed');
       } else {
@@ -191,7 +192,14 @@ const removeFromQueue = (queueId) => {
         return db.Queue.findAll({where: {position: {[ne]: null, [gt]: row.position}}});
       }
     })
-    .then(result => result.map(row => db.Queue.upsert({wait: row.wait - restaurant.average_wait, id: row.id})))
+    .then(result => {
+      var promises = [];
+      for (var i = 0; i < result.length; i++) {
+        promises.push(db.Queue.upsert({wait: result[i].wait - restaurant.average_wait, id: result[i].id, position: result[i].position - 1}));
+
+      }
+      return Promise.all(promises);
+    })
     .then(() => db.Restaurant.upsert({'total_wait': restaurant.total_wait - restaurant.average_wait, phone: restaurant.phone}))
     .then(() => db.Queue.upsert({position: null, wait: null, id: queueId}))
     .then(() => getQueueInfo(restaurant.id, 0, restaurant.nextPosition + 1));
