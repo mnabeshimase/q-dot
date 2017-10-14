@@ -6,29 +6,29 @@ import io from 'socket.io-client';
 import Modal from 'react-modal';
 
 const modalStyles = {
-  overlay : {
-    position          : 'fixed',
-    top               : 0,
-    left              : 0,
-    right             : 0,
-    bottom            : 0,
-    backgroundColor   : 'rgba(204, 204, 204, 0.75)'
+  overlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(204, 204, 204, 0.75)'
   },
-  content : {
-    position                   : 'absolute',
-    top                        : '40px',
-    left                       : '300px',
-    right                      : '300px',
-    bottom                     : '100px',
-    border                     : '1px solid #ccc',
-    background                 : '#fff',
-    overflow                   : 'auto',
-    WebkitOverflowScrolling    : 'touch',
-    borderRadius               : '4px',
-    outline                    : 'none',
-    padding                    : '20px'
+  content: {
+    position: 'absolute',
+    top: '40px',
+    left: '300px',
+    right: '300px',
+    bottom: '100px',
+    border: '1px solid #ccc',
+    background: '#fff',
+    overflow: 'auto',
+    WebkitOverflowScrolling: 'touch',
+    borderRadius: '4px',
+    outline: 'none',
+    padding: '20px'
   }
-}
+};
 
 export default class QueueInfo extends React.Component {
   constructor(props) {
@@ -36,12 +36,12 @@ export default class QueueInfo extends React.Component {
     this.state = {
       currentCustomer: {
         restaurant: {
-          name:''
+          name: ''
         }
       },
       ready: false,
       messages: [],
-      input: "",
+      input: '',
       modalIsOpen: false
     };
     // socket initialize
@@ -56,7 +56,7 @@ export default class QueueInfo extends React.Component {
 
       let oldMessages = this.state.messages;
       this.setState({messages: oldMessages.concat(message)});
-    })
+    });
 
     this.handleOnSubmit = this.handleOnSubmit.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -73,24 +73,24 @@ export default class QueueInfo extends React.Component {
     this.setState({
       modalIsOpen: !this.state.modalIsOpen
     });
-  };
+  }
 
   hideModal() {
     this.setState({
       modalIsOpen: false
     });
-  };
+  }
 
   handleOnChange(ev) {
-     this.setState({ input: ev.target.value })
-   }
+    this.setState({ input: ev.target.value });
+  }
 
   handleOnSubmit(ev) {
-    ev.preventDefault()
-    this.socket.emit('chat message', { name: `<Customer:${this.state.currentCustomer.name}>`, message: this.state.input })
+    ev.preventDefault();
+    this.socket.emit('chat message', { name: `<Customer:${this.state.currentCustomer.name}>`, message: this.state.input });
 
-    this.setState({ input: '' })
-   }
+    this.setState({ input: '' });
+  }
 
   getCurrentCustomerId() {
     let windowUrl = window.location.href;
@@ -134,10 +134,10 @@ export default class QueueInfo extends React.Component {
       return (
         <div className='row'>
           <div >
-            {`<${item.name}> : ${item.message}`}
+            <span style={{'font-weight': 'bold'}}>{item.name}</span> <span>{item.message}</span>
           </div>
         </div>
-      )
+      );
     });
 
     return (
@@ -161,18 +161,18 @@ export default class QueueInfo extends React.Component {
             onRequestClose={this.hideModal}
             style={modalStyles}
           >
-          <div >
-            {message}
-          </div>
+            <div >
+              {message}
+            </div>
             <br/>
-            <div className="input-group" style={{"position": "absolute", "bottom": "0", "width": "90%"}}>
-            <input type="text" className="form-control" placeholder="chat..." aria-label="chat..." onChange={this.handleOnChange} value={this.state.input}/>
-            <span className="input-group-btn">
-            <button className="btn btn-outline-primary" type="button" onClick={this.handleOnSubmit}>Send</button>
-            <button className="btn btn-outline-primary" type="button" onClick={this.hideModal}>Close</button>
-            </span>
+            <div className="input-group" style={{'position': 'absolute', 'bottom': '0', 'width': '90%'}}>
+              <input type="text" className="form-control" placeholder="chat..." aria-label="chat..." onChange={this.handleOnChange} value={this.state.input}/>
+              <span className="input-group-btn">
+                <button className="btn btn-outline-primary" type="button" onClick={this.handleOnSubmit} style={{'margin': '0 15px 20px 0'}}>Send</button>
+                <button className="btn btn-outline-primary" type="button" onClick={this.hideModal} style={{'margin': '0 0 20px 0'}}>Close</button>
+              </span>
 
-          </div>
+            </div>
           </Modal>
         </div>
         <div>

@@ -70,7 +70,7 @@ const Queue = db.define('queue', {
     defaultValue: 0
   },
   position: Sequelize.INTEGER,
-  customer_message: Sequelize.STRING
+  'customer_message': Sequelize.STRING
 });
 
 //Restaurant Schema
@@ -104,6 +104,22 @@ const Restaurant = db.define('restaurant', {
   menu: Sequelize.STRING
 });
 
+const LongTerm = db.define('longterm', {
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  'restaurant_id': Sequelize.INTEGER,
+  wait: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0
+  },
+  date: Sequelize.STRING,
+  hour: Sequelize.INTEGER,
+  'average_wait': Sequelize.ARRAY(Sequelize.INTEGER)
+});
+
 // Relationship between Restaurant & Queue
 Restaurant.hasMany(Queue);
 Queue.belongsTo(Restaurant);
@@ -128,5 +144,6 @@ module.exports = {
   Queue: Queue,
   Restaurant: Restaurant,
   Manager: Manager,
-  ManagerAudit: ManagerAudit
+  ManagerAudit: ManagerAudit,
+  LongTerm: LongTerm
 };
