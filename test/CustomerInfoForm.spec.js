@@ -8,36 +8,32 @@ describe('<CustomerInfoForm/>', () => {
   });
   it('should respond to user input when typing in the first name', () => {
     const handleChangeSpy = spy(CustomerInfoForm.prototype, 'getFirstName');
-    const event = {target: {value: 'random'}};
     const wrapper = mount(<CustomerInfoForm/>);
-    wrapper.find('#first_name').simulate('change', event);
+    wrapper.find('#first_name').simulate('change');
     expect(handleChangeSpy.calledOnce).to.equal(true);
     wrapper.find('#first_name').simulate('change', {target: {value: 'masaki'}});
     expect(wrapper.state().customerFirstName).to.equal('masaki');
   });
   it('should respond to user input when typing in the last name', () => {
     const handleChangeSpy = spy(CustomerInfoForm.prototype, 'getLastName');
-    const event = {target: {value: 'random'}};
     const wrapper = mount(<CustomerInfoForm/>);
-    wrapper.find('#last_name').simulate('change', event);
+    wrapper.find('#last_name').simulate('change');
     expect(handleChangeSpy.calledOnce).to.equal(true);
     wrapper.find('#last_name').simulate('change', {target: {value: 'nabeshima'}});
     expect(wrapper.state().customerLastName).to.equal('nabeshima');
   });
   it('should respond to user input when typing in the phone number', () => {
     const handleChangeSpy = spy(CustomerInfoForm.prototype, 'getMobile');
-    const event = {target: {value: 'random'}};
     const wrapper = mount(<CustomerInfoForm/>);
-    wrapper.find('#telephone').simulate('change', event);
+    wrapper.find('#telephone').simulate('change');
     expect(handleChangeSpy.calledOnce).to.equal(true);
     wrapper.find('#telephone').simulate('change', {target: {value: '(415) 941-4506'}});
     expect(wrapper.state().customerMobile).to.equal('(415) 941-4506');
   });
   it('should respond to user input when typing in the email', () => {
     const handleChangeSpy = spy(CustomerInfoForm.prototype, 'getEmail');
-    const event = {target: {value: 'random'}};
     const wrapper = mount(<CustomerInfoForm/>);
-    wrapper.find('#email').simulate('change', event);
+    wrapper.find('#email').simulate('change');
     expect(handleChangeSpy.calledOnce).to.equal(true);
     wrapper.find('#email').simulate('change', {target: {value: 'masakinabeshima@gmail.com'}});
     expect(wrapper.state().customerEmail).to.equal('masakinabeshima@gmail.com');

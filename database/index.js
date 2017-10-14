@@ -103,14 +103,14 @@ const LongTerm = db.define('longterm', {
     autoIncrement: true
   },
   restaurant_id: Sequelize.INTEGER,
-  wait: {
+  calculated_wait: {
     type: Sequelize.INTEGER,
     defaultValue: 0
   },
   month: Sequelize.INTEGER,
   date: Sequelize.INTEGER,
   hour: Sequelize.INTEGER,
-  average_wait: Sequelize.ARRAY(Sequelize.INTEGER)
+  average_wait_data: Sequelize.ARRAY(Sequelize.INTEGER)
 });
 
 const ShortTerm = db.define('shortterm', {
@@ -120,13 +120,13 @@ const ShortTerm = db.define('shortterm', {
     autoIncrement: true
   },
   restaurant_id: Sequelize.INTEGER,
-  wait: {
+  calculated_wait: {
     type: Sequelize.INTEGER,
     defaultValue: 0
   },
-  day_in_week: Sequelize.INTEGER,
+  day: Sequelize.INTEGER,
   hour: Sequelize.INTEGER,
-  average_wait: Sequelize.ARRAY(Sequelize.INTEGER)
+  average_wait_data: Sequelize.ARRAY(Sequelize.INTEGER)
 });
 
 // Relationship between Restaurant & Queue

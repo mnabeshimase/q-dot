@@ -48,6 +48,10 @@ const addManager = () => {
   });
 };
 
+const addLongTerm = () => {
+  return db.Restaurant.findOrCreate({where: {name: 'Tempest', phone: '(123) 456-7890', image: '../images/tempestbar.jpg', status: 'Open', 'average_wait': 10, 'total_wait': 10, 'type': 'bar', 'menu': 'http://www.pourguys.com/box-night-menu'}})
+}
+
 const dropDB = () => {
   return db.Queue.drop()
     .then(() => db.Customer.drop())
