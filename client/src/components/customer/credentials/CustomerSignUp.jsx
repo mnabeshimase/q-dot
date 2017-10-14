@@ -12,7 +12,7 @@ class CustomerSignUp extends React.Component {
       phoneNumber: '',
       password: '',
       username: ''
-  	}
+  	};
   }
 
   handleChange(e, type) {
@@ -28,8 +28,7 @@ class CustomerSignUp extends React.Component {
       email: this.state.email,
       mobile: this.state.phoneNumber,
     	password: this.state.password
-    }
-    console.log(data)
+    };
     $.ajax({
       url: `/customersignup?username=${this.state.username}&password=${this.state.password}`,
       method: 'POST',
@@ -55,21 +54,21 @@ class CustomerSignUp extends React.Component {
 
   render() {
     return (
-      <div className='container'> 
+      <div className='container'>
         <form className='form-signin'>
           <h2 className='form-signin-heading'>Sign up</h2>
-          <input 
-            value={this.state.firstName} 
+          <input
+            value={this.state.firstName}
             type='username'
             id='first_name'
             className='form-control'
             placeholder='First Name'
             data-error="wrong" data-success="right"
             required
-            onChange={(e)=> this.handleChange(e, 'firstName')} 
-          /> 
+            onChange={(e)=> this.handleChange(e, 'firstName')}
+          />
 
-          <input 
+          <input
             value={this.state.lastName}
             type='username'
             id='last_name'
@@ -79,7 +78,7 @@ class CustomerSignUp extends React.Component {
             required
             onChange={(e)=> this.handleChange(e, 'lastName')}
           />
-          <input 
+          <input
             value={this.state.phoneNumber}
             type='username'
             id='phone_number'
@@ -92,16 +91,16 @@ class CustomerSignUp extends React.Component {
           <br/>
           <br/>
           <label className='sr-only'>Email address</label>
-          <input 
+          <input
             value={this.state.email}
             type='email'
             id='email'
             className='form-control'
             placeholder='email'
             required autoFocus
-            onChange={(e)=> this.handleChange(e, 'email')} 
+            onChange={(e)=> this.handleChange(e, 'email')}
           />
-          <input 
+          <input
             value={this.state.password}
             type='password'
             id='password'
@@ -110,15 +109,15 @@ class CustomerSignUp extends React.Component {
             data-error="wrong" data-success="right"
             required
             onChange={(e)=> this.handleChange(e, 'password')}
-          /> 
+          />
 
-          <button 
+          <button
             className='btn btn-lg btn-primary btn-block'
             onClick={(e)=> this.handleSubmit(e)}
           > enter </button>
         </form>
       </div>
-    )
+    );
   }
 }
 
