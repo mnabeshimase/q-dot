@@ -5,22 +5,60 @@ export default class CustomerListEntry extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      showTimer: false,
+      changeHtml: false,
+      render: false,
+      showTimer: false
+    }
+    this.checkStateForRender = this.checkStateForRender.bind(this);
+    this.customerTimeUp = this.customerTimeUp.bind(this);
+  }
 
+  componentWillMount() {
+    this.checkStateForRender();
+  }
+
+  customerTimeUp() {
+    this.setState({
+      changeHtml: true
+    })
+  }
+
+  checkStateForRender() {
+    if (this.state.render === false) {
+      this.setState({
+        render: true,
+        showTimer: true
+      })
+    } else {
+      //do nothing
     }
 
   }
-
+//() => {this.props.notiCustomer(this.props.queue.id);
   render() {
+
+let timer = null;
+for (var i = 0; i < this.props.readyId.length; i++) {
+  if (this.props.readyId[i] === this.props.queue.customerId){
+    timer = <ReactCountdown  className="col-md-6" seconds={5} size={40} onComplete={()=>{this.customerTimeUp()}}/>
+    this.props.notiCustomer(this.props.queue.id)
+  } else {
+  // do nothing
+  }
+}
     return (
       <div className="row panel-body">
         <div className="col-md-8">
           <div className="row">
             <div className="col-md-6">
-              <h3 >{this.props.queue.customer.name}</h3>
+
+              {this.state.changeHtml ?
+                <h3 style={{"color":"red", "textAlign": "left", "verticalAlign": "top"}}>{this.props.queue.customer.name}</h3> :
+                <h3 style={{"textAlign": "left", "verticalAlign": "top"}}>{this.props.queue.customer.name}</h3>}
+
             </div>
 
-              {this.props.readyId.includes(this.props.queue.customerId) ? <ReactCountdown  className="col-md-6" seconds={600} size={50} /> : console.log('Waiting')}
+              {this.state.showTimer ? timer : console.log('do nothing')}
 
           </div>
             <div className="row">

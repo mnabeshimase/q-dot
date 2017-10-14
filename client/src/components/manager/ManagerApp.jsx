@@ -76,31 +76,42 @@ class ManagerApp extends React.Component {
 
   // Naive implementation
   handleGroupSize(tableSize){
-    console.log('handle')
+
     let queue = this.state.queues;
+    let results = this.state.customerIdReady;
     for (let i = 0; i < queue.length; i++) {
-      if (queue[i].size === tableSize || queue[i].size <= 2) {
-        let results = this.state.customerIdReady;
-        results.push(queue[i].customerId);
-        this.setState((state, props) => {
-          return {
-            customerIdReady: results
-          }
-        });
-        return;
+      if (queue[i].size === tableSize && queue[i].size <= 2) {
+
+        if (results.includes(queue[i].customerId)){
+          console.log(queue[i].customerId, " already included in results")
+        } else {
+          results.push(queue[i].customerId);
+          this.setState((state, props) => {
+            return {
+              customerIdReady: results
+            }
+          });
+          return
       }
+
+      }
+
       if (queue[i].size === tableSize) {
-        let results = this.state.customerIdReady;
-        results.push(queue[i].customerId);
-        this.setState((state, props) => {
-          return {
-            customerIdReady: results
-          }
-        });
-        return;
+
+        if (results.includes(queue[i].customerId)){
+          console.log(queue[i].customerId, " already included in results")
+        } else {
+          results.push(queue[i].customerId);
+          this.setState((state, props) => {
+            return {
+              customerIdReady: results
+            }
+          });
+          return
       }
     }
   }
+}
 
   openModal() {
     this.setState({
