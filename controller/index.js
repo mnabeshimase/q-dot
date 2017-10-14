@@ -1,5 +1,5 @@
 const db = require('../database/index.js');
-const { ne, lt, gt } = db.Sequelize.Op;
+const { ne, lt, gt, eq } = db.Sequelize.Op;
 const helpers = require('../helpers/helpers.js');
 const crypto = require('crypto');
 
@@ -184,24 +184,48 @@ const removeFromQueue = (queueId) => {
   let restaurant;
   return db.Queue.find({where: {id: queueId}, include: [db.Restaurant]})
     .then(row => {
-      console.log('row', row)
       if (!row.position && !row.wait) {
         throw new Error('Already removed');
       } else {
         restaurant = row.restaurant;
-        return db.Queue.findAll({where: {position: {[ne]: null, [gt]: row.position}}});
+        return db.Queue.findAll({
+          where: {
+            position: {
+              [ne]: null,
+              [gt]: row.position
+            },
+            restaurantId : {
+              [eq]: row.restaurantId
+            }
+          }
+        });
       }
     })
-    .then(result => {
+    .then(results => {
+      console.log(results.length);
       var promises = [];
-      for (var i = 0; i < result.length; i++) {
-        promises.push(db.Queue.upsert({wait: result[i].wait - restaurant.average_wait, id: result[i].id, position: result[i].position - 1}));
-
+      for (var i = 0; i < results.length; i++) {
+        promises.push(results[i].update({
+          wait: results[i].wait - restaurant.average_wait,
+          position: results[i].position - 1,
+        }));
       }
       return Promise.all(promises);
     })
     .then(() => db.Restaurant.upsert({'total_wait': restaurant.total_wait - restaurant.average_wait, phone: restaurant.phone}))
-    .then(() => db.Queue.upsert({position: null, wait: null, id: queueId}))
+    .then(() => {
+      console.log(queueId, '!!!!!!!!');
+      return db.Queue.update({
+          position: null,
+          wait: null
+        }, {
+          where: {
+            id: {
+              [eq]: queueId
+            }
+          }
+        });
+    })
     .then(() => getQueueInfo(restaurant.id, 0, restaurant.nextPosition + 1));
 };
 
