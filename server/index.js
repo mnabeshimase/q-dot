@@ -13,7 +13,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const passport = require('./passport.js');
-const redisconfig = require('../database/redisconfig.js')
+const redisconfig = require('../database/redisconfig.js');
 
 /* Import React modules for server rendering */
 import React from 'react';
