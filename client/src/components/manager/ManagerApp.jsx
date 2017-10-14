@@ -9,29 +9,29 @@ import io from 'socket.io-client';
 import Modal from 'react-modal';
 
 const modalStyles = {
-  overlay : {
-    position          : 'fixed',
-    top               : 0,
-    left              : 0,
-    right             : 0,
-    bottom            : 0,
-    backgroundColor   : 'rgba(204, 204, 204, 0.75)'
+  overlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(204, 204, 204, 0.75)'
   },
-  content : {
-    position                   : 'absolute',
-    top                        : '40px',
-    left                       : '300px',
-    right                      : '300px',
-    bottom                     : '100px',
-    border                     : '1px solid #ccc',
-    background                 : '#fff',
-    overflow                   : 'auto',
-    WebkitOverflowScrolling    : 'touch',
-    borderRadius               : '4px',
-    outline                    : 'none',
-    padding                    : '20px'
+  content: {
+    position: 'absolute',
+    top: '40px',
+    left: '300px',
+    right: '300px',
+    bottom: '100px',
+    border: '1px solid #ccc',
+    background: '#fff',
+    overflow: 'auto',
+    WebkitOverflowScrolling: 'touch',
+    borderRadius: '4px',
+    outline: 'none',
+    padding: '20px'
   }
-}
+};
 
 class ManagerApp extends React.Component {
 
@@ -41,7 +41,7 @@ class ManagerApp extends React.Component {
     this.state = {
       queues: undefined,
       restaurantInfo: {},
-      input: "",
+      input: '',
       messages: [],
       modalIsOpen: false
     };
@@ -58,7 +58,7 @@ class ManagerApp extends React.Component {
     this.socket.on('chat message', (message) => {
       let oldMessages = this.state.messages;
       this.setState({messages: oldMessages.concat(message)});
-    })
+    });
 
     this.handleOnSubmit = this.handleOnSubmit.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -74,23 +74,23 @@ class ManagerApp extends React.Component {
     this.setState({
       modalIsOpen: !this.state.modalIsOpen
     });
-  };
+  }
 
   hideModal() {
     this.setState({
       modalIsOpen: false
     });
-  };
+  }
 
   handleOnChange(ev) {
-     this.setState({ input: ev.target.value });
-   }
+    this.setState({ input: ev.target.value });
+  }
 
   handleOnSubmit(ev) {
-    ev.preventDefault()
+    ev.preventDefault();
     this.socket.emit('chat message', { name: this.state.restaurantInfo.name, message: this.state.input });
-    this.setState({ input: '' })
-   }
+    this.setState({ input: '' });
+  }
 
   switchStatus() {
     $.ajax({
@@ -174,7 +174,7 @@ class ManagerApp extends React.Component {
             {`<${item.name}> : ${item.message}`}
           </div>
         </div>
-      )
+      );
     });
 
     return (
@@ -196,23 +196,23 @@ class ManagerApp extends React.Component {
               <CustomerList queues={this.state.queues} addCustomer={this.addToQueue.bind(this)} removeCustomer={this.removeCustomer.bind(this)} notiCustomer={this.notiCustomer.bind(this)}/>
             </div>
           </div>
-            <Modal
-              isOpen={this.state.modalIsOpen}
-              onRequestClose={this.hideModal}
-              style={modalStyles}
-            >
+          <Modal
+            isOpen={this.state.modalIsOpen}
+            onRequestClose={this.hideModal}
+            style={modalStyles}
+          >
             <div >
               {message}
             </div>
-              <br/>
-              <div className="input-group" style={{"position": "absolute", "bottom": "0", "width": "90%"}}>
+            <br/>
+            <div className="input-group" style={{'position': 'absolute', 'bottom': '0', 'width': '90%'}}>
               <input type="text" className="form-control" placeholder="chat..." aria-label="chat..." onChange={this.handleOnChange} value={this.state.input}/>
               <span className="input-group-btn">
-              <button className="btn btn-outline-primary" type="button" onClick={this.handleOnSubmit}>Send</button>
-              <button className="btn btn-outline-primary" type="button" onClick={this.hideModal}>Close</button>
+                <button className="btn btn-outline-primary" type="button" onClick={this.handleOnSubmit}>Send</button>
+                <button className="btn btn-outline-primary" type="button" onClick={this.hideModal}>Close</button>
               </span>
             </div>
-            </Modal>
+          </Modal>
         </div>
       </div>
     );
