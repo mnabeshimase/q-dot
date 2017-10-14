@@ -150,7 +150,6 @@ app.post('/dummydata', (req, res) => {
 
 //add a customer to the queue at a restaurant
 app.post('/api/queues', (req, res) => {
-  dbQuery.getAverageWait()
   if (!req.body.name || !req.body.mobile || !req.body.email || !req.body.restaurantId
       || !req.body.size) {
     res.status(400).send('Bad Request');
