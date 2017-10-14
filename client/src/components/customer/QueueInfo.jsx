@@ -16,17 +16,14 @@ const modalStyles = {
   },
   content: {
     position: 'absolute',
-    top: '40px',
-    left: '300px',
-    right: '300px',
-    bottom: '100px',
     border: '1px solid #ccc',
     background: '#fff',
-    overflow: 'auto',
+    overflow: 'scroll',
     WebkitOverflowScrolling: 'touch',
     borderRadius: '4px',
     outline: 'none',
-    padding: '20px'
+    padding: '20px',
+    margin: '0 auto'
   }
 };
 
