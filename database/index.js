@@ -8,13 +8,6 @@ if (process.env.DATABASE_URL) {
   db = new Sequelize(SequelizeConfig);
 }
 
-db.authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
-  });
 
 //Manager Audit History Schema
 const ManagerAudit = db.define('manageraudit', {
@@ -55,7 +48,6 @@ const Customer = db.define('customer', {
   passwordHash: Sequelize.STRING,
   salt: Sequelize.STRING
 });
-//password / hash;
 
 //Queue Schema
 const Queue = db.define('queue', {
@@ -105,14 +97,20 @@ const Restaurant = db.define('restaurant', {
 });
 
 const LongTerm = db.define('longterm', {
-  'restaurant_id': Sequelize.INTEGER,
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  restaurant_id: Sequelize.INTEGER,
   wait: {
     type: Sequelize.INTEGER,
     defaultValue: 0
   },
-  date: Sequelize.STRING,
+  month: Sequelize.INTEGER,
+  date: Sequelize.INTEGER,
   hour: Sequelize.INTEGER,
-  'average_wait': Sequelize.ARRAY(Sequelize.INTEGER)
+  average_wait: Sequelize.ARRAY(Sequelize.INTEGER)
 });
 
 const ShortTerm = db.define('shortterm', {
@@ -139,11 +137,6 @@ Queue.belongsTo(Customer);
 Manager.hasOne(ManagerAudit);
 ManagerAudit.belongsTo(Manager);
 
-Customer.sync()
-  .then(() => Restaurant.sync())
-  .then(() => Queue.sync())
-  .then(() => ShortTerm.sync())
-  .catch(error => console.log('error syncing data'));
 
 module.exports = {
   Sequelize: Sequelize,

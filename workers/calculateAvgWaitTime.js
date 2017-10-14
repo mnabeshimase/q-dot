@@ -1,45 +1,62 @@
-const db = require('../database/index.js')
+const db = require('../database/index.js');
+const dummyData = require('../database/dummydata.js');
 
-db.Queue.findAll({ //Find all entries that were dequeued within the last hour in Queues table
-  where: {
-    // position: null,
-    // wait: null,
-    updatedAt: {
-      [db.Sequelize.Op.gt]: new Date(new Date().getTime() - (1000*60*60))
-    }
-  }
-})
-.then((results) => {
-  let average_waits = {};//{ restaurant_id: Average wait time per person for the past hour }
-  for(let i = 0; i < results.length; i++) {
-    average_waits[results[i].dataValues.restaurantId] = average_waits[results[i].dataValues.restaurantId] || [];
-    average_waits[results[i].dataValues.restaurantId].
-    push((results[i].dataValues.updatedAt - results[i].dataValues.createdAt) / results[i].dataValues.size);
-  }
-  //Naive implementation: '(updatedAt - createdAt) / size' computes the time spent at the restaurant per peron.
-  for(let key in average_waits) {
-    average_waits[key] = average_waits[key].reduce((avg, current) => {
-      return avg + current / average_waits[key].length;
-    }, 0);
-  }
-  return db.LTWaits.find({
+var averageWaits = {};//{ restaurant_id: Average wait time per person for the past hour }
+
+dummyData.dropDB()
+.then(() => {
+  return db.Queue.findAll({ //Find all entries that were dequeued within the last hour in Queues table
     where: {
-      restaurant_id: {
-        [db.Sequelize.Op.in]: Object.getOwnPropertyNames(average_waits)
+      updatedAt: {
+        [db.Sequelize.Op.gt]: new Date(new Date().getTime() - (1000*60*60))
       }
     }
-  });
+  })
 })
 .then((results) => {
-  let updates = []
   for(let i = 0; i < results.length; i++) {
-    results[i].dataValues.wait_avg.push(average_waits[results[i].dataValues.restaurant_id]);
-    updates.push(results[i].update({
-      wait_avg: results[i].dataValues.wait_avg
+    averageWaits[results[i].dataValues.restaurantId] = averageWaits[results[i].dataValues.restaurantId] || [];
+    averageWaits[results[i].dataValues.restaurantId].
+    push((results[i].dataValues.updatedAt - results[i].dataValues.createdAt) / results[i].dataValues.size);
+  }
+  console.log(averageWaits);
+  //Naive implementation: '(updatedAt - createdAt) / size' computes the time spent at the restaurant per peron.
+  for(let key in averageWaits) {
+    averageWaits[key] = averageWaits[key].reduce((avg, current) => {
+      return avg + current / averageWaits[key].length;
+    }, 0);
+  }
+  console.log(averageWaits);
+  let findOrCreates = []
+  for(let key in averageWaits) {
+    findOrCreates.push(
+      db.LongTerm.findOrCreate({
+        where: {
+          restaurant_id: {
+            [db.Sequelize.Op.eq]: key
+          }
+        },
+        defaults: {
+          restaurant_id: key,
+          wait: 0,
+          month: new Date().getMonth(),
+          date: new Date().getDate(),
+          hour: new Date().getHours(),
+          average_wait: [0]
+        }
+      })
+    );
+  }
+  return Promise.all(findOrCreates);
+})
+.then((results) => {
+  let updates = [];
+  for(let i = 0; i < results.length; i++) {
+    let newAverageWait = results[i][0].average_wait;
+    newAverageWait.push(averageWaits[results[i][0].restaurant_id]);
+    updates.push(results[i][0].update({
+      average_wait: newAverageWait
     }))
   }
   return Promise.all(updates);
 })
-
-// createdAt
-// updatedAt
