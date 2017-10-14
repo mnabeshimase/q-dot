@@ -125,7 +125,7 @@ const ShortTerm = db.define('shortterm', {
   dayInWeek: Sequelize.STRING,
   hour: Sequelize.STRING,
   average_wait: Sequelize.ARRAY(Sequelize.INTEGER)
-})
+});
 
 // Relationship between Restaurant & Queue
 Restaurant.hasMany(Queue);
@@ -153,6 +153,6 @@ module.exports = {
   Restaurant: Restaurant,
   Manager: Manager,
   ManagerAudit: ManagerAudit,
-  LongTerm: LongTerm
+  LongTerm: LongTerm,
   ShortTerm: ShortTerm
 };
