@@ -4,11 +4,18 @@ const dummyData = require('../database/dummydata.js');
 var averageWaits = {};//{ restaurant_id: Average wait time per person for the past hour }
 
 dummyData.dropDB()
+.then(() => dummyData.addToAndRemoveFromQueue())
 .then(() => {
   return db.Queue.findAll({ //Find all entries that were dequeued within the last hour in Queues table
     where: {
       updatedAt: {
         [db.Sequelize.Op.gt]: new Date(new Date().getTime() - (1000*60*60))
+      },
+      position: {
+        [db.Sequelize.Op.eq]: null
+      },
+      wait: {
+        [db.Sequelize.Op.eq]: null
       }
     }
   })
@@ -19,21 +26,28 @@ dummyData.dropDB()
     averageWaits[results[i].dataValues.restaurantId].
     push((results[i].dataValues.updatedAt - results[i].dataValues.createdAt) / results[i].dataValues.size);
   }
-  console.log(averageWaits);
   //Naive implementation: '(updatedAt - createdAt) / size' computes the time spent at the restaurant per peron.
   for(let key in averageWaits) {
     averageWaits[key] = averageWaits[key].reduce((avg, current) => {
       return avg + current / averageWaits[key].length;
     }, 0);
   }
-  console.log(averageWaits);
-  let findOrCreates = []
+  let findOrCreates = [];
   for(let key in averageWaits) {
     findOrCreates.push(
       db.LongTerm.findOrCreate({
         where: {
           restaurant_id: {
             [db.Sequelize.Op.eq]: key
+          },
+          month: {
+            [db.Sequelize.Op.eq]: new Date().getMonth()
+          },
+          date: {
+            [db.Sequelize.Op.eq]: new Date().getDate()
+          },
+          hour: {
+            [db.Sequelize.Op.eq]: new Date().getHours()
           }
         },
         defaults: {
@@ -42,7 +56,7 @@ dummyData.dropDB()
           month: new Date().getMonth(),
           date: new Date().getDate(),
           hour: new Date().getHours(),
-          average_wait: [0]
+          average_wait: []
         }
       })
     );

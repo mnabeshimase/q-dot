@@ -202,7 +202,6 @@ const removeFromQueue = (queueId) => {
       }
     })
     .then(results => {
-      console.log(results.length);
       var promises = [];
       for (var i = 0; i < results.length; i++) {
         promises.push(results[i].update({
@@ -214,7 +213,6 @@ const removeFromQueue = (queueId) => {
     })
     .then(() => db.Restaurant.upsert({'total_wait': restaurant.total_wait - restaurant.average_wait, phone: restaurant.phone}))
     .then(() => {
-      console.log(queueId, '!!!!!!!!');
       return db.Queue.update({
           position: null,
           wait: null
