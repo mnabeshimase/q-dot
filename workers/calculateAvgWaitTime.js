@@ -59,55 +59,6 @@ dummyData.dropDB()
             hour: new Date().getHours(),
             average_wait: []
           }
-<<<<<<< HEAD
-        },
-        defaults: {
-          restaurant_id: key,
-          wait: 0,
-          month: new Date().getMonth(),
-          date: new Date().getDate(),
-          hour: new Date().getHours(),
-          average_wait: []
-        }
-      })
-    );
-    findOrCreates.push(
-      db.ShortTerm.findOrCreate({
-        where: {
-          restaurant_id: {
-            [db.Sequelize.Op.eq]: key
-          },
-          day_in_week: {
-            [db.Sequelize.Op.eq]: new Date().getDay()
-          },
-          hour: {
-            [db.Sequelize.Op.eq]: new Date().getHours()
-          }
-        },
-        defaults: {
-          restaurant_id: key,
-          wait: 0,
-          day_in_week: new Date().getDay(),
-          hour: new Date().getHours(),
-          average_wait: []
-        }
-      })
-    );
-  }
-  return Promise.all(findOrCreates);
-})
-.then((results) => {
-  let updates = [];
-  for(let i = 0; i < results.length; i++) {
-    let newAverageWait = results[i][0].average_wait;
-    newAverageWait.push(averageWaits[results[i][0].restaurant_id]);
-    updates.push(results[i][0].update({
-      average_wait: newAverageWait
-    }))
-  }
-  return Promise.all(updates);
-})
-=======
         })
       );
     }
@@ -135,4 +86,3 @@ dummyData.dropDB()
     }
     return Promise.all(predictedWait);
   });
->>>>>>> Added predicted wait time for long term table
