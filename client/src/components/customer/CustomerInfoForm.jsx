@@ -97,7 +97,7 @@ class CustomerInfoForm extends React.Component {
 
   render() {
     return (
-      <div className="customer-info-input-container">
+      <div className="customer-info-input container">
         <div className="row">
           <GroupSizeSelector getGroupSize={this.getGroupSize}/>
           <div className="row">
@@ -129,7 +129,12 @@ class CustomerInfoForm extends React.Component {
             </div>
           </div>
           <div className="row">
-            <input className="waves-effect waves-light btn" type="submit" value="Add to Queue" onClick={this.submitCustomerInfo}/>
+            <div className="col xs2">
+              <a className="waves-effect waves-light btn" type="submit" onClick={this.submitCustomerInfo}>Add to Queue</a>
+            </div>
+            <div className="col xs2">
+              <a className="waves-effect waves-light btn" onClick={this.props.getMenu}>Menu</a>
+            </div>
           </div>
         </div>
       </div>

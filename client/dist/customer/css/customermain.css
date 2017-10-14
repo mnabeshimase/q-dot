@@ -9541,7 +9541,7 @@ nav li a {
     padding-bottom: 0px !important;
   }
 
-  .select-restaurant-container h4 { 
+  .select-restaurant-container h4 {
     font-family: Roboto, Helvetica Neue, sans-serif !important;
     color: #202020;
     font-size: 30px !important;
@@ -9687,7 +9687,7 @@ nav li a {
 
 /*SELECTED RESTAURANT PAGE STYLE*/
 
-.restaurant-banner-container {
+.restaurant-banner {
   overflow: hidden !important;
   height: 250px !important;
 }

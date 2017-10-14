@@ -55,9 +55,7 @@ class SelectedRestaurant extends React.Component {
           <RestaurantLogoBanner style={{backgroundImage: `url(/images/${this.state.currentRestaurant.image})`}} /> : undefined
         }
         <RestaurantInformation restaurant={this.props.currentRestaurant || this.state.currentRestaurant}/>
-        <CustomerInfoForm customerInfoSubmitted={this.customerInfoSubmitted} />
-
-        <span style={{'margin': '-140px 0 0 375px'}} className="waves-effect waves-light btn" onClick={this.getMenu}> Menu </span>
+        <CustomerInfoForm customerInfoSubmitted={this.customerInfoSubmitted} getMenu={this.getMenu}/>
       </div>
     );
   }

@@ -8,13 +8,6 @@ if (process.env.DATABASE_URL) {
   db = new Sequelize(SequelizeConfig);
 }
 
-db.authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
-  });
 
 //Manager Audit History Schema
 const ManagerAudit = db.define('manageraudit', {
@@ -55,7 +48,6 @@ const Customer = db.define('customer', {
   passwordHash: Sequelize.STRING,
   salt: Sequelize.STRING
 });
-//password / hash;
 
 //Queue Schema
 const Queue = db.define('queue', {
@@ -70,7 +62,7 @@ const Queue = db.define('queue', {
     defaultValue: 0
   },
   position: Sequelize.INTEGER,
-  customer_message: Sequelize.STRING
+  'customer_message': Sequelize.STRING
 });
 
 //Restaurant Schema
@@ -104,6 +96,39 @@ const Restaurant = db.define('restaurant', {
   menu: Sequelize.STRING
 });
 
+const LongTerm = db.define('longterm', {
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  restaurant_id: Sequelize.INTEGER,
+  calculated_wait: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0
+  },
+  month: Sequelize.INTEGER,
+  date: Sequelize.INTEGER,
+  hour: Sequelize.INTEGER,
+  average_wait_data: Sequelize.ARRAY(Sequelize.INTEGER)
+});
+
+const ShortTerm = db.define('shortterm', {
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  restaurant_id: Sequelize.INTEGER,
+  calculated_wait: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0
+  },
+  day: Sequelize.INTEGER,
+  hour: Sequelize.INTEGER,
+  average_wait_data: Sequelize.ARRAY(Sequelize.INTEGER)
+});
+
 // Relationship between Restaurant & Queue
 Restaurant.hasMany(Queue);
 Queue.belongsTo(Restaurant);
@@ -116,10 +141,6 @@ Queue.belongsTo(Customer);
 Manager.hasOne(ManagerAudit);
 ManagerAudit.belongsTo(Manager);
 
-Customer.sync()
-  .then(() => Restaurant.sync())
-  .then(() => Queue.sync())
-  .catch(error => console.log('error syncing data'));
 
 module.exports = {
   Sequelize: Sequelize,
@@ -128,5 +149,7 @@ module.exports = {
   Queue: Queue,
   Restaurant: Restaurant,
   Manager: Manager,
-  ManagerAudit: ManagerAudit
+  ManagerAudit: ManagerAudit,
+  LongTerm: LongTerm,
+  ShortTerm: ShortTerm
 };
