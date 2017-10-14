@@ -42,12 +42,12 @@ const findInfoForAllRestaurants = () => {
     include: [db.Queue],
     order: [['id', 'ASC']]
   })
-  .then(restaurants => {
-    restaurants.forEach(restaurant => {
-      restaurant.dataValues.queues = restaurant.queues.filter(row => row.position !== null);
+    .then(restaurants => {
+      restaurants.forEach(restaurant => {
+        restaurant.dataValues.queues = restaurant.queues.filter(row => row.position !== null);
+      });
+      return restaurants;
     });
-    return restaurants;
-  });
 };
 
 //update restaurant open/close status
@@ -194,7 +194,7 @@ const removeFromQueue = (queueId) => {
               [ne]: null,
               [gt]: row.position
             },
-            restaurantId : {
+            restaurantId: {
               [eq]: row.restaurantId
             }
           }
@@ -214,15 +214,15 @@ const removeFromQueue = (queueId) => {
     .then(() => db.Restaurant.upsert({'total_wait': restaurant.total_wait - restaurant.average_wait, phone: restaurant.phone}))
     .then(() => {
       return db.Queue.update({
-          position: null,
-          wait: null
-        }, {
-          where: {
-            id: {
-              [eq]: queueId
-            }
+        position: null,
+        wait: null
+      }, {
+        where: {
+          id: {
+            [eq]: queueId
           }
-        });
+        }
+      });
     })
     .then(() => getQueueInfo(restaurant.id, 0, restaurant.nextPosition + 1));
 };
