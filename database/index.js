@@ -139,9 +139,6 @@ Queue.belongsTo(Customer);
 Manager.hasOne(ManagerAudit);
 ManagerAudit.belongsTo(Manager);
 
-ST.hasOne(Queue);
-Queue.belongsTo(ST);
-
 Customer.sync()
   .then(() => Restaurant.sync())
   .then(() => Queue.sync())
