@@ -53,11 +53,11 @@ dummyData.dropDB()
           },
           defaults: {
             restaurant_id: key,
-            wait: 0,
+            calculated_wait: 0,
             month: new Date().getMonth(),
             date: new Date().getDate(),
             hour: new Date().getHours(),
-            average_wait: []
+            average_wait_data: []
           }
         })
       );
@@ -67,10 +67,10 @@ dummyData.dropDB()
   .then((results) => {
     let updates = [];
     for (let i = 0; i < results.length; i++) {
-      let newAverageWait = results[i][0].average_wait;
+      let newAverageWait = results[i][0].average_wait_data;
       newAverageWait.push(averageWaits[results[i][0].restaurant_id]);
       updates.push(results[i][0].update({
-        average_wait: newAverageWait
+        average_wait_data: newAverageWait
       }));
     }
     return Promise.all(updates);
@@ -78,10 +78,10 @@ dummyData.dropDB()
   .then((results) => {
     let predictedWait = [];
     for (let i = 0; i < results.length; i++) {
-      let averageWait = results[i].dataValues.average_wait;
+      let averageWait = results[i].dataValues.average_wait_data;
       let calculatedWait = helpers.EMACalc(averageWait, averageWait.length);
       predictedWait.push(results[i].update({
-        wait: calculatedWait
+        calculated_wait: calculatedWait
       }));
     }
     return Promise.all(predictedWait);
