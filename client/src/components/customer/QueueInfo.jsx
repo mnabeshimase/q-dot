@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import CustomerNav from './CustomerNav.jsx';
 import CustomerBanner from './CustomerBanner.jsx';
 import $ from 'jquery';
@@ -114,10 +115,9 @@ export default class QueueInfo extends React.Component {
       method: 'DELETE',
       url: `/queues?queueId=${id}`,
       success: (data) => {
-        console.log(data);
-
         // report queueId to server socket
         this.socket.emit('customer report', id);
+        window.location.replace(`/`);
       },
       failure: (error) => {
         console.log('failed to remove customer from queue', error);
