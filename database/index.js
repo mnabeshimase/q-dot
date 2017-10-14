@@ -114,14 +114,18 @@ const LongTerm = db.define('longterm', {
 });
 
 const ShortTerm = db.define('shortterm', {
-  restaurant_id: Sequelize.INTEGER,
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
-  dayInWeek: Sequelize.STRING,
-  hour: Sequelize.STRING,
+  restaurant_id: Sequelize.INTEGER,
+  wait: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0
+  },
+  day_in_week: Sequelize.INTEGER,
+  hour: Sequelize.INTEGER,
   average_wait: Sequelize.ARRAY(Sequelize.INTEGER)
 });
 
