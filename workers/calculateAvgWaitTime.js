@@ -60,6 +60,28 @@ dummyData.dropDB()
         }
       })
     );
+    findOrCreates.push(
+      db.ShortTerm.findOrCreate({
+        where: {
+          restaurant_id: {
+            [db.Sequelize.Op.eq]: key
+          },
+          day_in_week: {
+            [db.Sequelize.Op.eq]: new Date().getDay()
+          },
+          hour: {
+            [db.Sequelize.Op.eq]: new Date().getHours()
+          }
+        },
+        defaults: {
+          restaurant_id: key,
+          wait: 0,
+          day_in_week: new Date().getDay(),
+          hour: new Date().getHours(),
+          average_wait: []
+        }
+      })
+    );
   }
   return Promise.all(findOrCreates);
 })
