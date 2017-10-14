@@ -35,7 +35,6 @@ app.use(session({
   cookie: {
     maxAge: 18000000
   },
-  name: 'qsessionid',
   resave: false,
   saveUninitialized: false
 }));
