@@ -8,6 +8,7 @@ import $ from 'jquery';
 import io from 'socket.io-client';
 import Modal from 'react-modal';
 
+
 const modalStyles = {
   overlay: {
     position: 'fixed',
@@ -43,7 +44,8 @@ class ManagerApp extends React.Component {
       restaurantInfo: {},
       input: '',
       messages: [],
-      modalIsOpen: false
+      modalIsOpen: false,
+      customerIdReady: []
     };
 
     // socket initialize
@@ -64,11 +66,52 @@ class ManagerApp extends React.Component {
     this.handleOnChange = this.handleOnChange.bind(this);
     this.openModal = this.openModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
+    this.handleGroupSize = this.handleGroupSize.bind(this);
+    //this.timer = this.timer.bind(this);
   }
 
   componentDidMount() {
     this.reloadData();
   }
+
+  // Naive implementation
+  handleGroupSize(tableSize){
+
+    let queue = this.state.queues;
+    let results = this.state.customerIdReady;
+    for (let i = 0; i < queue.length; i++) {
+      if (queue[i].size === tableSize && queue[i].size <= 2) {
+
+        if (results.includes(queue[i].customerId)){
+          console.log(queue[i].customerId, " already included in results")
+        } else {
+          results.push(queue[i].customerId);
+          this.setState((state, props) => {
+            return {
+              customerIdReady: results
+            }
+          });
+          return
+      }
+
+      }
+
+      if (queue[i].size === tableSize) {
+
+        if (results.includes(queue[i].customerId)){
+          console.log(queue[i].customerId, " already included in results")
+        } else {
+          results.push(queue[i].customerId);
+          this.setState((state, props) => {
+            return {
+              customerIdReady: results
+            }
+          });
+          return
+      }
+    }
+  }
+}
 
   openModal() {
     this.setState({
@@ -186,8 +229,36 @@ class ManagerApp extends React.Component {
               <ManagerAudit />
             </div>
             <div className="col-md-6">
-              <CustomerList queues={this.state.queues} addCustomer={this.addToQueue.bind(this)} removeCustomer={this.removeCustomer.bind(this)} notiCustomer={this.notiCustomer.bind(this)}/>
+
+                <h3>Table Availability</h3>
+
+                <div className="panel panel-default">
+                    <button onClick={()=>{this.handleGroupSize(2)}} type="button" className="btn btn-primary btn-color btn-bg-color  col-xs-2">
+                      <span className="glyphicon glyphicon-plus" aria-hidden="true"></span> 2
+                    </button>
+                    <button onClick={()=>{this.handleGroupSize(3)}} type="button" className="btn btn-warning btn-color btn-bg-color  col-xs-2">
+                      <span className="glyphicon glyphicon-plus" aria-hidden="true"></span> 3
+                    </button>
+                    <button onClick={()=>{this.handleGroupSize(4)}} type="button" className="btn btn-success btn-color btn-bg-color  col-xs-2">
+                      <span className="glyphicon glyphicon-plus" aria-hidden="true"></span> 4
+                    </button>
+                    <button onClick={()=>{this.handleGroupSize(5)}} type="button" className="btn btn-danger btn-color btn-bg-color  col-xs-2">
+                      <span className="glyphicon glyphicon-plus" aria-hidden="true"></span> 5
+                    </button>
+                    <button onClick={()=>{this.handleGroupSize(6)}} type="button" className="btn btn-info btn-color btn-bg-color  col-xs-2">
+                      <span className="glyphicon glyphicon-plus" aria-hidden="true"></span> 6
+                    </button>
+                    <button onClick={()=>{this.handleGroupSize(7)}} type="button" className="btn btn-dark btn-color btn-bg-color  col-xs-2" style={{"marginRight": "0"}}>
+                      <span className="glyphicon glyphicon-plus" aria-hidden="true"></span> 7
+                    </button>
+                </div>
             </div>
+
+            <div className="col-md-6">
+              <br/>
+              <CustomerList readyId={this.state.customerIdReady} queues={this.state.queues} addCustomer={this.addToQueue.bind(this)} removeCustomer={this.removeCustomer.bind(this)} notiCustomer={this.notiCustomer.bind(this)}/>
+            </div>
+
           </div>
           <Modal
             isOpen={this.state.modalIsOpen}

@@ -13,6 +13,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const passport = require('./passport.js');
+const redisconfig = require('../database/redisconfig.js')
 
 /* Import React modules for server rendering */
 import React from 'react';
@@ -27,8 +28,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 //checks if session already exists, if it does, adds req.session to req object
 app.use(session({
   store: new RedisStore({
-    host: process.env.REDISURL || '198.199.103.230',
-    port: process.env.REDISPORT || 6379
+    host: process.env.REDISURL || redisconfig.host,
+    port: process.env.REDISPORT || redisconfig.port
   }),
   secret: process.env.SESSIONSECRET || 'teambeam',
   cookie: {

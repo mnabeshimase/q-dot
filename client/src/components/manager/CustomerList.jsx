@@ -24,9 +24,9 @@ class CustomerList extends React.Component {
   render() {
     let notiCustomer = this.props.notiCustomer.bind(this);
     let entries = this.props.queues ? _.map(this.props.queues, (queue, index) => {
-      return <CustomerListEntry key={index} queue={queue} notiCustomer={notiCustomer} showModal={this.showModal.bind(this)}/>;
+      return <CustomerListEntry readyId={this.props.readyId} key={index} queue={queue} notiCustomer={notiCustomer} showModal={this.showModal.bind(this)}/>;
     }) : <div>Nobody In Queue</div>;
-    
+
     let removeCustomer = () => this.props.removeCustomer(this.state.modalQueue.id);
     return (
       <div>
@@ -37,7 +37,7 @@ class CustomerList extends React.Component {
         <div className="panel panel-default">
           {entries}
         </div>
-        
+
         { this.state.modalQueue
           ? <div id="remove-warning" className="modal fade" role="dialog">
             <div className="modal-dialog">
