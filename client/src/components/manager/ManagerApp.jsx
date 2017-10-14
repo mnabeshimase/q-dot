@@ -7,7 +7,6 @@ import ManagerAudit from './ManagerAudit.jsx';
 import $ from 'jquery';
 import io from 'socket.io-client';
 import Modal from 'react-modal';
-import TableButtons from './TableContainer.jsx'
 
 
 const modalStyles = {
@@ -45,7 +44,8 @@ class ManagerApp extends React.Component {
       restaurantInfo: {},
       input: '',
       messages: [],
-      modalIsOpen: false
+      modalIsOpen: false,
+      customerIdReady: []
     };
 
     // socket initialize
@@ -67,37 +67,39 @@ class ManagerApp extends React.Component {
     this.openModal = this.openModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
     this.handleGroupSize = this.handleGroupSize.bind(this);
+    //this.timer = this.timer.bind(this);
   }
 
   componentDidMount() {
     this.reloadData();
   }
 
+  // Naive implementation
   handleGroupSize(tableSize){
-    console.log('handle4')
-    this.state.queues.forEach((item)=> {
-      // 1
-      if (item.size <= tableSize) {
-        console.log(item);
+    console.log('handle')
+    let queue = this.state.queues;
+    for (let i = 0; i < queue.length; i++) {
+      if (queue[i].size === tableSize || queue[i].size <= 2) {
+        let results = this.state.customerIdReady;
+        results.push(queue[i].customerId);
+        this.setState((state, props) => {
+          return {
+            customerIdReady: results
+          }
+        });
         return;
       }
-      // 2
-      if (item.size === tableSize && item.size >= 2) {
-        console.log(item);
+      if (queue[i].size === tableSize) {
+        let results = this.state.customerIdReady;
+        results.push(queue[i].customerId);
+        this.setState((state, props) => {
+          return {
+            customerIdReady: results
+          }
+        });
         return;
       }
-      // 4
-      if (item.size === tableSize) {
-        console.log(item);
-        return;
-      }
-      // 8
-      if (item.size === tableSize) {
-        console.log(item);
-        return;
-      }
-
-    })
+    }
   }
 
   openModal() {
@@ -243,7 +245,7 @@ class ManagerApp extends React.Component {
 
             <div className="col-md-6">
               <br/>
-              <CustomerList queues={this.state.queues} addCustomer={this.addToQueue.bind(this)} removeCustomer={this.removeCustomer.bind(this)} notiCustomer={this.notiCustomer.bind(this)}/>
+              <CustomerList readyId={this.state.customerIdReady} queues={this.state.queues} addCustomer={this.addToQueue.bind(this)} removeCustomer={this.removeCustomer.bind(this)} notiCustomer={this.notiCustomer.bind(this)}/>
             </div>
 
           </div>
