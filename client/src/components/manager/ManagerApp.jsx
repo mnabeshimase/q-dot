@@ -97,7 +97,6 @@ class ManagerApp extends React.Component {
       url: '/api/restaurants?restaurantId=1&status=' + (this.state.restaurantInfo.status === 'Open' ? 'Closed' : 'Open'),
       method: 'PATCH',
       success: (data) => {
-        console.log(data);
         this.reloadData();
       },
       error: (err) => {
@@ -107,12 +106,10 @@ class ManagerApp extends React.Component {
   }
 
   notiCustomer(queueId) {
-    console.log(`noti sended to queueId: ${queueId}`);
     this.socket.emit('noti customer', queueId);
   }
 
   addToQueue(customer) {
-    console.log('here to add', customer);
     customer.restaurantId = 1;
     $.ajax({
       method: 'POST',
@@ -120,7 +117,6 @@ class ManagerApp extends React.Component {
       data: JSON.stringify(customer),
       contentType: 'application/json',
       success: (data) => {
-        console.log('this was a successful post request', data);
         this.reloadData();
       },
       failure: (error) => {
@@ -130,12 +126,10 @@ class ManagerApp extends React.Component {
   }
 
   removeCustomer(queueId) {
-    console.log(queueId);
     $.ajax({
       url: '/api/queues?queueId=' + queueId,
       method: 'PUT',
       success: (data) => {
-        console.log(data);
         this.reloadData();
       },
       error: (err) => {
@@ -148,7 +142,6 @@ class ManagerApp extends React.Component {
     $.ajax({
       url: '/api/restaurants?restaurantId=1',
       success: (data) => {
-        console.log(data);
         this.setState(
           {
             restaurantInfo: data,
