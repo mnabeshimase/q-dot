@@ -13,7 +13,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const passport = require('./passport.js');
-const redisconfig = require('../database/redisconfig.js')
+const redisconfig = require('../database/redisconfig.js');
 
 /* Import React modules for server rendering */
 import React from 'react';
@@ -150,7 +150,6 @@ app.post('/dummydata', (req, res) => {
 
 //add a customer to the queue at a restaurant
 app.post('/api/queues', (req, res) => {
-  dbQuery.getAverageWait()
   if (!req.body.name || !req.body.mobile || !req.body.email || !req.body.restaurantId
       || !req.body.size) {
     res.status(400).send('Bad Request');

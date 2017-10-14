@@ -239,5 +239,5 @@ module.exports = {
   getManagerInfo: getManagerInfo,
   removeFromQueue: removeFromQueue,
   genSalt: genSalt,
-  genPassword: genPassword,
+  genPassword: genPassword
 };
