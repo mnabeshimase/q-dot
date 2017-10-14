@@ -8,6 +8,24 @@ const addToQueue = () => {
     .then(() => dbQuery.addToQueue({name: 'Johnny', restaurantId: 2, size: 2, mobile: '4156844758'}));
 };
 
+const addToAndRemoveFromQueue = () => {
+  return dbQuery.addToQueue({name: 'Bao', restaurantId: 1, size: 2, mobile: '0000000000'})
+  .then(() => dbQuery.addToQueue({name: 'Masaki', restaurantId: 1, size: 1, mobile: '0000000001'}))
+  .then(() => dbQuery.addToQueue({name: 'Austin', restaurantId: 2, size: 2, mobile: '0000000002'}))
+  .then(() => dbQuery.addToQueue({name: 'Evan', restaurantId: 3, size: 2, mobile: '0000000003'}))
+  .then(() => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve()
+      }, 1000)
+    });
+  })
+  .then(() => dbQuery.removeFromQueue(1))
+  .then(() => dbQuery.removeFromQueue(2))
+  .then(() => dbQuery.removeFromQueue(3))
+  .then(() => dbQuery.removeFromQueue(4));
+};
+
 const addRestaurants = () => {
   return db.Restaurant.findOrCreate({where: {name: 'Tempest', phone: '(123) 456-7890', image: '../images/tempestbar.jpg', status: 'Open', 'average_wait': 10, 'total_wait': 10, 'type': 'bar', 'menu': 'http://www.pourguys.com/box-night-menu'}})
     .then(() => db.Restaurant.findOrCreate({where: {name: 'House of Prime Rib', phone: '(415) 885-4605', image: '../images/houseofprimerib.jpg', status: 'Open', 'average_wait': 10, 'total_wait': 10, 'type': 'american', 'menu': 'http://houseofprimerib.net/home.html'}}))
@@ -51,6 +69,7 @@ const dropDB = () => {
 module.exports = {
   addRestaurants: addRestaurants,
   addToQueue: addToQueue,
+  addToAndRemoveFromQueue: addToAndRemoveFromQueue,
   addManager: addManager,
   dropDB: dropDB
 };

@@ -45,7 +45,6 @@ app.use(passport.session());
 
 //this is to check if manager is logged in, before using static middleware. MUST always be above express.static!
 app.get('/manager', (req, res, next) => {
-
   if (req.user) {
     console.log('logged in');
     next();
@@ -104,7 +103,6 @@ app.post('/customersignup', (req, res) => {
 
   dbQuery.findOrAddCustomerN(params)
     .then((results) => {
-      console.log(results);
       res.end();
     })
     .catch((err) => {
@@ -314,11 +312,6 @@ app.delete('/api/manager/history', (req, res) => {
 server.listen(port, () => {
   console.log(`(>^.^)> Server now listening on ${port}!`);
 });
-
-// socket io cant use express listen
-// app.listen(port, () => {
-//   console.log(`(>^.^)> Server now listening on ${port}!`);
-// });
 
 let queueMap = {};// queueId: socketId
 let managerMap = {};// restaurantId: socketId
