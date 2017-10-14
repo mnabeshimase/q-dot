@@ -154,12 +154,16 @@ export default class QueueInfo extends React.Component {
               <p className="groups-in-front-indicator">There are currently {this.state.currentCustomer.queueInFrontCount} groups in front of you</p>
             </div>
         }
-        <div className="col-lg-6">
+        <div>
           <button className="btn btn-outline-primary" onClick={this.openModal}>Chat</button>
+          <div>
+          <button className="btn btn-outline-primary" onClick={this.removeFromQueue}>Cancel reservation</button>
+          </div>
           <Modal
             isOpen={this.state.modalIsOpen}
             onRequestClose={this.hideModal}
             style={modalStyles}
+
           >
             <div >
               {message}
@@ -175,11 +179,7 @@ export default class QueueInfo extends React.Component {
             </div>
           </Modal>
         </div>
-        <div>
-          <a className="waves-effect waves-light btn" onClick={this.removeFromQueue}>
-            Cancel reservation
-          </a>
-        </div>
+
         <br/>
       </div>
     );
