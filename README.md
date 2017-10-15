@@ -78,7 +78,6 @@ This section outlines the steps on how to deploy the webserver and postgreSQL se
 2. Create a postgres database for your app. Follow instructions on [Heroku Postgres](https://devcenter.heroku.com/articles/heroku-postgresql).
 
 3. To post dummy data in the database, use postman or curl to make a POST request to http://<server_url>/dummydata
-
   Note: Post request for dummy data will delete all tables in the database and re-create them.
 
 #### DigitalOcean Deployment
