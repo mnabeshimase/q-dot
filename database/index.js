@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const SequelizeConfig = require('./sequalize-config.js');
+const SequelizeConfig = process.env.REDIS_URL ? undefined : require('./sequalize-config.js');
 let db;
 
 if (process.env.DATABASE_URL) {
