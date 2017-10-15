@@ -14,6 +14,10 @@ Customers are able to see their current position in line and total wait time, wh
   - [Tiffany Pham](https://github.com/tiffaphm)
   - [Neha Chaudhary](https://github.com/nehacp)
   - [Eugene Soo](https://github.com/eugenesoo)
+  - [Evan Chen](https://github.com/evanchen7)
+  - [Bao Nguyen](https://github.com/bnguyen2)
+  - [Masaki Nabeshima](https://github.com/mnabeshimase)
+  - [Austin Reuter](https://github.com/austinreuter)
 
 ## Table of Contents
 
@@ -74,7 +78,7 @@ This section outlines the steps on how to deploy the webserver and postgreSQL se
 2. Create a postgres database for your app. Follow instructions on [Heroku Postgres](https://devcenter.heroku.com/articles/heroku-postgresql).
 
 3. To post dummy data in the database, use postman or curl to make a POST request to http://<server_url>/dummydata
-  
+
   Note: Post request for dummy data will delete all tables in the database and re-create them.
 
 #### DigitalOcean Deployment
@@ -105,7 +109,7 @@ Refer to the [official repository for redis](https://hub.docker.com/_/redis/) fo
 sudo docker run --name q-sessions -p 6379:6379 -d redis redis-server --appendonly yes
 ```
 
-This creates a new instance/container of the redis server, WITH persistant storage so that when you restart the docker container, the session information will not be wiped. 
+This creates a new instance/container of the redis server, WITH persistant storage so that when you restart the docker container, the session information will not be wiped.
 
 This also exposes port 6379 on the docker container to port 6379 of your linode/digitalocean server, so that it is possible to access the redis server via `http://<linode_ip_address>:6379/`
 
@@ -158,13 +162,13 @@ npm start
 
 **Setup Postgres Database**
 
-1. [Install](https://www.postgresql.org/download) postgres on your local computer. 
+1. [Install](https://www.postgresql.org/download) postgres on your local computer.
 
 Note: At this point you will not have a database called 'q-dot'. You will have to create it manually on your local computer.
 
 2. Go to Postgres in your applications folder and run SQL Shell. The default database is called 'postgres'. Login in to the database.
 
-3. Run command 
+3. Run command
 
 ```
 create database qdot;
@@ -261,12 +265,21 @@ To add dummy data to the database, use postman or curl to make a POST request to
 │   ├── index.js //contains express, sockets and all routings
 │   └── passport.js //contains settings for passport.js
 ├── test
-│   └── test.js //contains test suite
+|   ├── CustomerApp.spec.js //test suite for the CustomerApp react component
+|   ├── CustomerBanner.spec.js //test suite for the CustomerBanner react component
+|   ├── CustomerHome.spec.js //test suite for the CustomerHome react component
+|   ├── CustomerInfoForm.spec.js //test suite for the CustomerInfoForm react component
+|   ├── CustomerSignUp.spec.js //test suite for the CustomerSignUp react component
+│   ├── test.js //contains test suite for the server
+|   └── setup
+|       ├── dom.js //set up for react components tests
+|       └── helpers.js
 └── webpack.config.js
 ```
 
 ## Requirements
 
+- axios 0.16.2
 - babel-cli 6.7.5
 - babel-core 6.26.0
 - babel-loader 7.1.2
@@ -280,21 +293,26 @@ To add dummy data to the database, use postman or curl to make a POST request to
 - express 4.15.5
 - express-session 1.15.6
 - file-loader 1.1.4
+- font-awesome 4.7.0
 - jquery 3.2.1
 - passport 0.4.0
 - passport-local 1.0.0
 - pg 6.4.2
 - pg-hstore 2.3.2
 - react 16.0.0
+- react-countdown-clock 2.0.0
 - react-dom 16.0.0
+- react-modal 3.0.0
+- react-router-dom 4.2.2
+- react-toolbox 2.0.0-beta.12
 - redis 2.8.0
+- redis-cli 1.0.2
 - request 2.83.0
 - sequelize 4.13.2
 - socket.io 2.0.3
 - style-loader 0.18.2
 - url-loader 0.5.9
 - webpack 3.6.0
-- react-router-dom 4.2.2
 
 ## Development
 

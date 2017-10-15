@@ -347,6 +347,56 @@ Failed Response:
 418 - ''Failed to change position - Unknown Error'
 
 ```
+**To cancel a reservation from customer's page**
+
+DELETE request to '/api/queues?queueId=[queueId]' will remove a customer from the queue of a restaurant and destroy the session associated with the customer.
+
+The response is a string stating the status of the change.
+
+Example:
+
+```
+
+request.delete('https://q-dot.herokuapp.com/api/queues?queueId=1');
+
+//response
+
+Successful Response:
+
+If someone was removed from the queue succesfully, it will send an updated queue for that restaurant as stated below
+200 - {
+    "count": 2,
+    "rows": [
+        {
+            "id": 4,
+            "size": 2,
+            "wait": 10,
+            "position": 4,
+            "createdAt": "2017-10-06T19:32:19.853Z",
+            "updatedAt": "2017-10-06T19:32:19.853Z",
+            "restaurantId": 1,
+            "customerId": 8
+        },
+        {
+            "id": 6,
+            "size": 2,
+            "wait": 20,
+            "position": 6,
+            "createdAt": "2017-10-06T19:32:30.997Z",
+            "updatedAt": "2017-10-06T19:32:52.343Z",
+            "restaurantId": 1,
+            "customerId": 10
+        }
+    ]
+};
+
+200 - 'Already removed' (in case the request was made more than once)
+
+Failed Response:
+400 - 'Bad Request' (if the parameters are incorrect)
+418 - ''Failed to change position - Unknown Error'
+
+```
 ### /queues?queueId=[queueId]
 
 **Returns detailed queue information of a selected customer in database, including customer information**
