@@ -11,8 +11,7 @@
     "start": "node server/server.bundle.js",
     "test": "mocha --require babel-register --require ./test/setup/helpers.js --require ./test/setup/dom.js --recursive",
     "bundle": "webpack --watch --progress",
-    "dev-server": "nodemon --inspect server/server.bundle.js --open",
-    "postinstall": "webpack"
+    "dev-server": "nodemon --inspect server/server.bundle.js --open"
   },
   "dependencies": {
     "axios": "^0.16.2",
