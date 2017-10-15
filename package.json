@@ -8,7 +8,7 @@
     "node": ">=6.4.0"
   },
   "scripts": {
-    "start": "node server/server.bundle.js",
+    "start": "nodemon server/server.bundle.js",
     "test": "mocha --require babel-register --require ./test/setup/helpers.js --require ./test/setup/dom.js --recursive",
     "bundle": "webpack --watch --progress",
     "dev-server": "nodemon --inspect server/server.bundle.js --open"
