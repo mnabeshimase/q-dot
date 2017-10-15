@@ -117,14 +117,14 @@ dummyData.dropDB()
       var calcWait = term.dataValues.calculated_wait;
 
       if (dataVal.day) {
-        restData[restId] ? restData[restId].ST = calcWait : 
-        restData[restId] = {ST: calcWait}; 
+        restData[restId] ? restData[restId].ST = calcWait :
+        restData[restId] = {ST: calcWait};
       } else if (dataVal.month) {
         restData[restId] ? restData[restId].LT = calcWait :
-        restData[restId] = {LT: calcWait}; 
+        restData[restId] = {LT: calcWait};
       }
     });
-    return restData
+    return restData;
   })
   .then(results => {
     //combine short term and long term data
@@ -142,7 +142,7 @@ dummyData.dropDB()
           average_wait: results[id]
         }, {
           where: {
-            id: id 
+            id: id
           }
         })
       );
