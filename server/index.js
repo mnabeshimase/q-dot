@@ -19,7 +19,7 @@ const redisconfig = require('../database/redisconfig.js');
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { StaticRouter } from 'react-router';
-import Customer from '../client/src/components/customer/customerApp.jsx';
+import Customer from '../client/src/components/customer/CustomerApp.jsx';
 const customerTemplate = require('../client/dist/customer/index.html.js');
 
 app.use(bodyParser.json());
