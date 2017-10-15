@@ -39,3 +39,4 @@ client/dist/js/
 customerApp-bundle.js
 managerApp-bundle.js
 queueinfo-bundle.js
+server/server.bundle.js
