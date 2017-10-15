@@ -89,7 +89,7 @@ module.exports = require("jquery");
 
 
 var Sequelize = __webpack_require__(32);
-var SequelizeConfig = __webpack_require__(33);
+var SequelizeConfig = process.env.REDIS_URL ? undefined : __webpack_require__(33);
 var db = void 0;
 
 if (process.env.DATABASE_URL) {
@@ -895,7 +895,7 @@ var bodyParser = __webpack_require__(35);
 var session = __webpack_require__(36);
 var RedisStore = __webpack_require__(37)(session);
 var passport = __webpack_require__(38);
-var redisconfig = __webpack_require__(41);
+var redisconfig = process.env.REDIS_URL ? undefined : __webpack_require__(41);
 
 /* Import React modules for server rendering */
 
@@ -907,8 +907,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //checks if session already exists, if it does, adds req.session to req object
 app.use(session({
   store: new RedisStore({
-    host: process.env.REDISURL || redisconfig.host,
-    port: process.env.REDISPORT || redisconfig.port
+    url: process.env.REDIS_URL || redisconfig.host + ':' + redisconfig.port
   }),
   secret: process.env.SESSIONSECRET || 'teambeam',
   cookie: {
