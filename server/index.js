@@ -14,6 +14,9 @@ const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const passport = require('./passport.js');
 const redisconfig = process.env.REDIS_URL ? undefined : require('../database/redisconfig.js');
+const accountSid = 'AC826953c2c54322a261c5fd413878c775';
+const authToken = '6ee3e11ce1257624d4c75ab1aa9bbbb9';
+const client = require('twilio')(accountSid, authToken);
 
 /* Import React modules for server rendering */
 import React from 'react';
@@ -313,6 +316,45 @@ app.delete('/api/manager/history', (req, res) => {
   } else {
     res.sendStatus(401);
   }
+});
+
+//sends sms to customer when table is ready 18019131608
+app.post('/sendsms', (req, res) => {
+
+  var restaurantid = req.body.restaurantId;
+  var number = req.body.customer.mobile.match(/\d+/g).map(Number).join('');
+  var name = req.body.customer.name;
+  var restaurant = "";
+  var phone = "";
+
+  dbQuery.findInfoForOneRestaurant(restaurantid).then((result)=>{
+    restaurant = result.dataValues.name;
+    phone = result.dataValues.phone;
+  })
+  .then(()=>{
+    if (number.length === 10) {
+      client.messages.create({
+          to: `+1${number}`,
+          from: "+14159152850",
+          body: `Hello ${name}, your reservation at ${restaurant} is now ready! Please contact us at ${phone} if you have any questions.`,
+      }, (err, message) => {
+        if (err) {
+          throw err;
+        }
+        console.log(message.sid);
+        res.end();
+      });
+    }
+  })
+  .catch((err) => {
+    throw err;
+  })
+
+  console.log('CHECK', restaurant, phone)
+
+
+  res.end();
+
 });
 
 server.listen(port, () => {

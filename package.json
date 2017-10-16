@@ -46,6 +46,7 @@
     "sequelize": "^4.13.2",
     "socket.io": "^2.0.3",
     "style-loader": "^0.18.2",
+    "twilio": "^3.8.1",
     "webpack": "^3.6.0"
   },
   "devDependencies": {
