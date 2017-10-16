@@ -282,7 +282,7 @@ var CustomerNav = function CustomerNav() {
         null,
         _react2.default.createElement(
           "a",
-          { href: "../manager" },
+          { href: "/manager" },
           "manager"
         )
       )
@@ -645,9 +645,9 @@ var addToQueue = function addToQueue(params) {
   }).then(function (restaurant) {
     if (restaurant.status === 'Open') {
       queueInfo.position = restaurant.nextPosition + 1;
-      queueInfo.wait = restaurant.total_wait;
       queueInfo.restaurantId = restaurant.id;
       var totalWait = restaurant.total_wait + restaurant.average_wait;
+      queueInfo.wait = restaurant.total_wait === 0 ? 0 : totalWait;
       return db.Restaurant.upsert({ 'nextPosition': queueInfo.position, 'total_wait': totalWait, phone: restaurant.phone });
     } else {
       throw new Error('Restaurant has closed the queue');
@@ -707,13 +707,13 @@ var removeFromQueue = function removeFromQueue(queueId) {
     var promises = [];
     for (var i = 0; i < results.length; i++) {
       promises.push(results[i].update({
-        wait: results[i].wait - restaurant.average_wait,
+        wait: results[i].wait - restaurant.average_wait < 0 ? 0 : results[i].wait - restaurant.average_wait,
         position: results[i].position - 1
       }));
     }
     return Promise.all(promises);
   }).then(function () {
-    return db.Restaurant.upsert({ 'total_wait': restaurant.total_wait - restaurant.average_wait, phone: restaurant.phone });
+    return db.Restaurant.upsert({ 'total_wait': restaurant.total_wait - restaurant.average_wait < 0 ? 0 : restaurant.total_wait - restaurant.average_wait, phone: restaurant.phone, nextPosition: restaurant.nextPosition - 1 });
   }).then(function () {
     return db.Queue.update({
       position: null,
@@ -874,7 +874,7 @@ var _server2 = _interopRequireDefault(_server);
 
 var _reactRouter = __webpack_require__(13);
 
-var _CustomerApp = __webpack_require__(43);
+var _CustomerApp = __webpack_require__(14);
 
 var _CustomerApp2 = _interopRequireDefault(_CustomerApp);
 
@@ -906,8 +906,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //checks if session already exists, if it does, adds req.session to req object
 app.use(session({
-  store: new RedisStore({
-    url: process.env.REDIS_URL || redisconfig.host + ':' + redisconfig.port
+  store: process.env.REDIS_URL ? new RedisStore({
+    url: process.env.REDIS_URL
+  }) : new RedisStore({
+    host: redisconfig.host,
+    port: redisconfig.port
   }),
   secret: process.env.SESSIONSECRET || 'teambeam',
   cookie: {
@@ -1244,7 +1247,70 @@ module.exports = require("react-dom/server");
 module.exports = require("react-router");
 
 /***/ }),
-/* 14 */,
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _CustomerNav = __webpack_require__(4);
+
+var _CustomerNav2 = _interopRequireDefault(_CustomerNav);
+
+var _CustomerMain = __webpack_require__(15);
+
+var _CustomerMain2 = _interopRequireDefault(_CustomerMain);
+
+var _CustomerSignUp = __webpack_require__(26);
+
+var _CustomerSignUp2 = _interopRequireDefault(_CustomerSignUp);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// render the big components here
+var CustomerApp = function (_React$Component) {
+  _inherits(CustomerApp, _React$Component);
+
+  function CustomerApp(props) {
+    _classCallCheck(this, CustomerApp);
+
+    return _possibleConstructorReturn(this, (CustomerApp.__proto__ || Object.getPrototypeOf(CustomerApp)).call(this, props));
+  }
+
+  _createClass(CustomerApp, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(_CustomerNav2.default, null),
+        _react2.default.createElement(_CustomerMain2.default, { currentRestaurant: this.props.currentRestaurant })
+      );
+    }
+  }]);
+
+  return CustomerApp;
+}(_react2.default.Component);
+
+exports.default = CustomerApp;
+
+/***/ }),
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2369,7 +2435,8 @@ var RestaurantCard = function (_React$Component) {
                 'span',
                 { className: 'wait-time' },
                 'wait time: ',
-                this.props.restaurant.total_wait - this.props.restaurant.average_wait,
+
+                this.props.restaurant.total_wait,
                 ' mins'
               ),
               _react2.default.createElement(
@@ -2631,15 +2698,6 @@ module.exports = require("sequelize");
 "use strict";
 
 
-module.exports = {
-  database: 'qdot',
-  username: 'masakinabeshima',
-  password: '',
-  dialect: 'postgres',
-  port: 5432,
-  logging: false
-};
-
 /***/ }),
 /* 34 */
 /***/ (function(module, exports) {
@@ -2724,11 +2782,6 @@ module.exports = require("passport-local");
 "use strict";
 
 
-module.exports = {
-  host: '127.0.0.1',
-  port: '6379'
-};
-
 /***/ }),
 /* 42 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -2739,70 +2792,5 @@ module.exports = {
 module.exports = function (options) {
   return "\n    <!DOCTYPE html>\n      <html>\n      <head>\n        <link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\" />\n        <!--Import Google Icon Font-->\n        <link href=\"https://fonts.googleapis.com/icon?family=Material+Icons\" rel=\"stylesheet\">\n        <!--Import customermain.css-->\n        <link type=\"text/css\" rel=\"stylesheet\" href=\"/customer/css/customermain.css\" media=\"screen,projection\"/>\n        <!--Import materialize.css NOTE: right now is combined with customermain, need to refactor -->\n    <!--     <link type=\"text/css\" rel=\"stylesheet\" href=\"./css/materialize.min.css\"  media=\"screen,projection\"/> -->\n\n        <!--Let browser know website is optimized for mobile-->\n        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/>\n\n        <title>q.</title>\n      </head>\n\n      <body>\n        <div id='app'>" + options.component + "</div>\n        <script src='/js/customerApp-bundle.js'></script>\n        <!--Import jQuery before materialize.js-->\n        <script src=\"https://code.jquery.com/jquery-3.2.1.min.js\"></script>\n        <script type=\"text/javascript\" src=\"/customer/js/materialize.min.js\"></script>\n      </body>\n\n      <footer>\n        <br><br><br>\n        <hr>\n        by eggs-coffee-toast\n      </footer>\n    </html>";
 };
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _CustomerNav = __webpack_require__(4);
-
-var _CustomerNav2 = _interopRequireDefault(_CustomerNav);
-
-var _CustomerMain = __webpack_require__(15);
-
-var _CustomerMain2 = _interopRequireDefault(_CustomerMain);
-
-var _CustomerSignUp = __webpack_require__(26);
-
-var _CustomerSignUp2 = _interopRequireDefault(_CustomerSignUp);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-// render the big components here
-var CustomerApp = function (_React$Component) {
-  _inherits(CustomerApp, _React$Component);
-
-  function CustomerApp(props) {
-    _classCallCheck(this, CustomerApp);
-
-    return _possibleConstructorReturn(this, (CustomerApp.__proto__ || Object.getPrototypeOf(CustomerApp)).call(this, props));
-  }
-
-  _createClass(CustomerApp, [{
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(_CustomerNav2.default, null),
-        _react2.default.createElement(_CustomerMain2.default, { currentRestaurant: this.props.currentRestaurant })
-      );
-    }
-  }]);
-
-  return CustomerApp;
-}(_react2.default.Component);
-
-exports.default = CustomerApp;
-
 /***/ })
 /******/ ]);
