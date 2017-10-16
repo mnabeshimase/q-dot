@@ -6,6 +6,7 @@ logs
 
 .jshintrc
 redisconfig.js
+twilioconfig.js
 
 # Swap Files
 *.swp

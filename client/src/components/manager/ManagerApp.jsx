@@ -122,6 +122,7 @@ class ManagerApp extends React.Component {
   }
 }
 
+
   openModal() {
     this.setState({
       modalIsOpen: !this.state.modalIsOpen
@@ -265,7 +266,7 @@ class ManagerApp extends React.Component {
           </div>
           <Modal
             isOpen={this.state.modalIsOpen}
-            onRequestClose={this.hideModal}
+            onRequestClose={this.openModal}
             style={modalStyles}
           >
             <div >
@@ -276,7 +277,7 @@ class ManagerApp extends React.Component {
               <input type="text" className="form-control" placeholder="chat..." aria-label="chat..." onChange={this.handleOnChange} value={this.state.input}/>
               <span className="input-group-btn">
                 <button className="btn btn-outline-primary" type="button" onClick={this.handleOnSubmit}>Send</button>
-                <button className="btn btn-outline-primary" type="button" onClick={this.hideModal}>Close</button>
+                <button className="btn btn-outline-primary" type="button" onClick={this.openModal}>Close</button>
               </span>
             </div>
           </Modal>
