@@ -14,8 +14,10 @@ const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const passport = require('./passport.js');
 const redisconfig = process.env.REDIS_URL ? undefined : require('../database/redisconfig.js');
-const accountSid = require('./twilioconfig.js').accountSid;
-const authToken = require('./twilioconfig.js').authToken;
+//const accountSid = require('./twilioconfig.js').accountSid;
+//const authToken = require('./twilioconfig.js').authToken;
+const accountSid = 'AC826953c2c54322a261c5fd413878c775';
+const authToken = 'AC826953c2c54322a261c5fd413878c775';
 const client = require('twilio')(accountSid, authToken);
 
 /* Import React modules for server rendering */
