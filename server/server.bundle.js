@@ -1219,9 +1219,9 @@ app.post('/sendsms', function (req, res) {
         body: 'Hello ' + name + ', your reservation at ' + restaurant + ' is now ready! Please contact us at ' + phone + ' if you have any questions.'
       }, function (err, message) {
         if (err) {
-          throw err;
+          console.log(err);
+          res.end();
         }
-        console.log(message.sid);
         res.end();
       });
     }
