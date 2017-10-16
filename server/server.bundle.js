@@ -282,7 +282,7 @@ var CustomerNav = function CustomerNav() {
         null,
         _react2.default.createElement(
           "a",
-          { href: "../manager" },
+          { href: "/manager" },
           "manager"
         )
       )
