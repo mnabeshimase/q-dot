@@ -2435,6 +2435,7 @@ var RestaurantCard = function (_React$Component) {
                 'span',
                 { className: 'wait-time' },
                 'wait time: ',
+
                 this.props.restaurant.total_wait,
                 ' mins'
               ),
@@ -2697,15 +2698,6 @@ module.exports = require("sequelize");
 "use strict";
 
 
-module.exports = {
-  database: 'qdot',
-  username: 'baonguyen',
-  password: '',
-  logging: false,
-  dialect: 'postgres',
-  port: 5432
-};
-
 /***/ }),
 /* 34 */
 /***/ (function(module, exports) {
@@ -2790,11 +2782,6 @@ module.exports = require("passport-local");
 "use strict";
 
 
-module.exports = {
-  host: '198.199.103.230',
-  port: '6379'
-};
-
 /***/ }),
 /* 42 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -2805,6 +2792,5 @@ module.exports = {
 module.exports = function (options) {
   return "\n    <!DOCTYPE html>\n      <html>\n      <head>\n        <link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\" />\n        <!--Import Google Icon Font-->\n        <link href=\"https://fonts.googleapis.com/icon?family=Material+Icons\" rel=\"stylesheet\">\n        <!--Import customermain.css-->\n        <link type=\"text/css\" rel=\"stylesheet\" href=\"/customer/css/customermain.css\" media=\"screen,projection\"/>\n        <!--Import materialize.css NOTE: right now is combined with customermain, need to refactor -->\n    <!--     <link type=\"text/css\" rel=\"stylesheet\" href=\"./css/materialize.min.css\"  media=\"screen,projection\"/> -->\n\n        <!--Let browser know website is optimized for mobile-->\n        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/>\n\n        <title>q.</title>\n      </head>\n\n      <body>\n        <div id='app'>" + options.component + "</div>\n        <script src='/js/customerApp-bundle.js'></script>\n        <!--Import jQuery before materialize.js-->\n        <script src=\"https://code.jquery.com/jquery-3.2.1.min.js\"></script>\n        <script type=\"text/javascript\" src=\"/customer/js/materialize.min.js\"></script>\n      </body>\n\n      <footer>\n        <br><br><br>\n        <hr>\n        by eggs-coffee-toast\n      </footer>\n    </html>";
 };
-
 /***/ })
 /******/ ]);
