@@ -889,7 +889,7 @@ var port = process.env.PORT || 1337;
 var db = __webpack_require__(3);
 var dbQuery = __webpack_require__(7);
 var dbManagerQuery = __webpack_require__(10);
-// const dummyData = require('../database/dummydata.js');
+var dummyData = __webpack_require__(43);
 var helpers = __webpack_require__(8);
 var bodyParser = __webpack_require__(35);
 var session = __webpack_require__(36);
@@ -2804,6 +2804,128 @@ module.exports = {
 
 module.exports = function (options) {
   return "\n    <!DOCTYPE html>\n      <html>\n      <head>\n        <link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\" />\n        <!--Import Google Icon Font-->\n        <link href=\"https://fonts.googleapis.com/icon?family=Material+Icons\" rel=\"stylesheet\">\n        <!--Import customermain.css-->\n        <link type=\"text/css\" rel=\"stylesheet\" href=\"/customer/css/customermain.css\" media=\"screen,projection\"/>\n        <!--Import materialize.css NOTE: right now is combined with customermain, need to refactor -->\n    <!--     <link type=\"text/css\" rel=\"stylesheet\" href=\"./css/materialize.min.css\"  media=\"screen,projection\"/> -->\n\n        <!--Let browser know website is optimized for mobile-->\n        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/>\n\n        <title>q.</title>\n      </head>\n\n      <body>\n        <div id='app'>" + options.component + "</div>\n        <script src='/js/customerApp-bundle.js'></script>\n        <!--Import jQuery before materialize.js-->\n        <script src=\"https://code.jquery.com/jquery-3.2.1.min.js\"></script>\n        <script type=\"text/javascript\" src=\"/customer/js/materialize.min.js\"></script>\n      </body>\n\n      <footer>\n        <br><br><br>\n        <hr>\n        by eggs-coffee-toast\n      </footer>\n    </html>";
+};
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var db = __webpack_require__(3);
+var dbQuery = __webpack_require__(7);
+
+var addToQueue = function addToQueue() {
+  return dbQuery.addToQueue({ name: 'Tiffany', restaurantId: 1, size: 2, mobile: '4158475697' }).then(function () {
+    return dbQuery.addToQueue({ name: 'Neha', restaurantId: 1, size: 3, mobile: '4158965693', email: 'nez@gmail.com' });
+  }).then(function () {
+    return dbQuery.addToQueue({ name: 'Eugene', restaurantId: 2, size: 3, mobile: '4157855678', email: 'eugene@gmail.com' });
+  }).then(function () {
+    return dbQuery.addToQueue({ name: 'Johnny', restaurantId: 2, size: 2, mobile: '4156844758' });
+  });
+};
+
+var addToAndRemoveFromQueue = function addToAndRemoveFromQueue() {
+  return dbQuery.addToQueue({ name: 'Bao', restaurantId: 1, size: 2, mobile: '0000000000' }).then(function () {
+    return dbQuery.addToQueue({ name: 'Masaki', restaurantId: 1, size: 1, mobile: '0000000001' });
+  }).then(function () {
+    return dbQuery.addToQueue({ name: 'Austin', restaurantId: 2, size: 2, mobile: '0000000002' });
+  }).then(function () {
+    return dbQuery.addToQueue({ name: 'Evan', restaurantId: 3, size: 2, mobile: '0000000003' });
+  }).then(function () {
+    return new Promise(function (resolve, reject) {
+      setTimeout(function () {
+        resolve();
+      }, 1000);
+    });
+  }).then(function () {
+    return dbQuery.removeFromQueue(1);
+  }).then(function () {
+    return dbQuery.removeFromQueue(2);
+  }).then(function () {
+    return dbQuery.removeFromQueue(3);
+  }).then(function () {
+    return dbQuery.removeFromQueue(4);
+  });
+};
+
+var addRestaurants = function addRestaurants() {
+  return db.Restaurant.findOrCreate({ where: { name: 'Tempest', phone: '(123) 456-7890', image: '../images/tempestbar.jpg', status: 'Open', 'average_wait': 10, 'total_wait': 10, 'type': 'bar', 'menu': 'http://www.pourguys.com/box-night-menu' } }).then(function () {
+    return db.Restaurant.findOrCreate({ where: { name: 'House of Prime Rib', phone: '(415) 885-4605', image: '../images/houseofprimerib.jpg', status: 'Open', 'average_wait': 10, 'total_wait': 10, 'type': 'american', 'menu': 'http://houseofprimerib.net/home.html' } });
+  }).then(function () {
+    return db.Restaurant.findOrCreate({ where: { name: 'Tsunami Panhandle', phone: '(415) 567-7664', image: '../images/tsunamipanhandle.jpg', status: 'Open', 'average_wait': 5, 'total_wait': 5, 'type': 'sushi', 'menu': 'http://dajanigroup.net/menus/' } });
+  }).then(function () {
+    return db.Restaurant.findOrCreate({ where: { name: 'Kitchen Story', phone: '(415) 525-4905', image: '../images/kitchenstory.jpg', status: 'Open', 'average_wait': 15, 'total_wait': 15, 'type': 'modern', 'menu': 'http://kitchenstorysf.com/menu/' } });
+  }).then(function () {
+    return db.Restaurant.findOrCreate({ where: { name: 'Burma Superstar', phone: '(415) 387-2147', image: '../images/burmasuperstar.jpg', status: 'Open', 'average_wait': 10, 'total_wait': 10, 'type': 'chinese', 'menu': 'http://www.burmasuperstar.com/menu/' } });
+  }).then(function () {
+    return db.Restaurant.findOrCreate({ where: { name: 'State Bird Provisions', phone: '(415) 795-1272', image: '../images/statebirdprovisions.jpg', status: 'Closed', 'average_wait': 8, 'total_wait': 8, 'type': 'american', 'menu': 'http://statebirdsf.com/dinner/' } });
+  }).then(function () {
+    return db.Restaurant.findOrCreate({ where: { name: 'Limon Rotisserie', phone: '(415) 821-2134', image: '../images/limonrotisserie.jpg', status: 'Closed', 'average_wait': 12, 'total_wait': 12, 'type': 'peruvian', 'menu': 'http://www.limonrotisserie.com/menus' } });
+  }).then(function () {
+    return db.Restaurant.findOrCreate({ where: { name: 'Nopa', phone: '(415) 864-8643', image: '../images/nopa.jpg', status: 'Open', 'average_wait': 20, 'total_wait': 20, 'type': 'american', 'menu': 'http://nopasf.com/menus/dinner/' } });
+  }).then(function () {
+    return db.Restaurant.findOrCreate({ where: { name: 'Farmhouse Kitchen', phone: '(415) 814-2920', image: '../images/farmhousekitchen.jpg', status: 'Open', 'average_wait': 15, 'total_wait': 15, 'type': 'asian', 'menu': 'http://farmhousesf.com/wp-content/uploads/2017/06/Farmhouse-Kitchen-Thai-Dinner-Menu-Executive-Chef-Kasem-Saengsawang-Apr2017-1.pdf' } });
+  });
+};
+
+var addManager = function addManager() {
+  return db.Manager.findOrCreate({
+    where: {
+      username: 'johnny',
+      passwordHash: 'a48af21cebc18c880a2b9c53dd8b3fab483e26ff2b7b77dd9def2afe8305ff44b17f1b8d58e6106bb49570e602fde2b960e0e420d53874b2d8626016bbd97f83',
+      passwordSalt: '8b1269b13d1258b15af6c66f4f4d5cd9'
+    }
+  });
+};
+
+var addLongTerm = function addLongTerm() {
+  return db.Restaurant.findOrCreate({ where: { name: 'Tempest', phone: '(123) 456-7890', image: '../images/tempestbar.jpg', status: 'Open', 'average_wait': 10, 'total_wait': 10, 'type': 'bar', 'menu': 'http://www.pourguys.com/box-night-menu' } });
+};
+
+var dropDB = function dropDB() {
+  return db.Queue.drop().then(function () {
+    return db.Customer.drop();
+  }).then(function () {
+    return db.Restaurant.drop();
+  }).then(function () {
+    return db.ManagerAudit.drop();
+  }).then(function () {
+    return db.Manager.drop();
+  }).then(function () {
+    return db.LongTerm.drop();
+  }).then(function () {
+    return db.ShortTerm.drop();
+  }).then(function () {
+    return db.Restaurant.sync({ force: true });
+  }).then(function () {
+    return db.Customer.sync({ force: true });
+  }).then(function () {
+    return db.Queue.sync({ force: true });
+  }).then(function () {
+    return db.LongTerm.sync({ force: true });
+  }).then(function () {
+    return db.ShortTerm.sync({ force: true });
+  }).then(function () {
+    return db.Manager.sync({ force: true });
+  }).then(function () {
+    return db.ManagerAudit.sync({ force: true });
+  }).then(function () {
+    return addRestaurants();
+  }).then(function () {
+    return addToQueue();
+  }).then(function () {
+    return addManager();
+  });
+};
+
+module.exports = {
+  addRestaurants: addRestaurants,
+  addToQueue: addToQueue,
+  addToAndRemoveFromQueue: addToAndRemoveFromQueue,
+  addManager: addManager,
+  dropDB: dropDB
 };
 
 /***/ })
