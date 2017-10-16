@@ -65,18 +65,30 @@ class ManagerApp extends React.Component {
     this.handleOnSubmit = this.handleOnSubmit.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
     this.openModal = this.openModal.bind(this);
-    this.hideModal = this.hideModal.bind(this);
     this.handleGroupSize = this.handleGroupSize.bind(this);
-    //this.timer = this.timer.bind(this);
+    this.sendSMS = this.sendSMS.bind(this);
   }
 
   componentDidMount() {
     this.reloadData();
   }
 
+  sendSMS(customerInfo){
+    $.ajax({
+      url: '/sendsms',
+      method: 'POST',
+      data: customerInfo,
+      success: (data) => {
+        console.log('SMS sent for ', customerInfo)
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
+
   // Naive implementation
   handleGroupSize(tableSize){
-
     let queue = this.state.queues;
     let results = this.state.customerIdReady;
     for (let i = 0; i < queue.length; i++) {
@@ -92,12 +104,9 @@ class ManagerApp extends React.Component {
             }
           });
           return
+       }
       }
-
-      }
-
       if (queue[i].size === tableSize) {
-
         if (results.includes(queue[i].customerId)){
           console.log(queue[i].customerId, " already included in results")
         } else {
@@ -107,7 +116,7 @@ class ManagerApp extends React.Component {
               customerIdReady: results
             }
           });
-          return
+          return;
       }
     }
   }
@@ -116,12 +125,6 @@ class ManagerApp extends React.Component {
   openModal() {
     this.setState({
       modalIsOpen: !this.state.modalIsOpen
-    });
-  }
-
-  hideModal() {
-    this.setState({
-      modalIsOpen: false
     });
   }
 
@@ -256,7 +259,7 @@ class ManagerApp extends React.Component {
 
             <div className="col-md-6">
               <br/>
-              <CustomerList readyId={this.state.customerIdReady} queues={this.state.queues} addCustomer={this.addToQueue.bind(this)} removeCustomer={this.removeCustomer.bind(this)} notiCustomer={this.notiCustomer.bind(this)}/>
+              <CustomerList sendSMS={this.sendSMS} readyId={this.state.customerIdReady} queues={this.state.queues} addCustomer={this.addToQueue.bind(this)} removeCustomer={this.removeCustomer.bind(this)} notiCustomer={this.notiCustomer.bind(this)}/>
             </div>
 
           </div>

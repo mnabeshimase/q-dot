@@ -24,7 +24,7 @@ class CustomerList extends React.Component {
   render() {
     let notiCustomer = this.props.notiCustomer.bind(this);
     let entries = this.props.queues ? _.map(this.props.queues, (queue, index) => {
-      return <CustomerListEntry readyId={this.props.readyId} key={index} queue={queue} notiCustomer={notiCustomer} showModal={this.showModal.bind(this)}/>;
+      return <CustomerListEntry sendSMS={this.props.sendSMS} readyId={this.props.readyId} key={index} queue={queue} notiCustomer={notiCustomer} showModal={this.showModal.bind(this)}/>;
     }) : <div>Nobody In Queue</div>;
 
     let removeCustomer = () => this.props.removeCustomer(this.state.modalQueue.id);
