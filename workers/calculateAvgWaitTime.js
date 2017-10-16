@@ -3,11 +3,7 @@ const dummyData = require('../database/dummydata.js');
 const helpers = require('../helpers/helpers.js');
 
 var averageWaits = {};//{ restaurant_id: Average wait time per person for the past hour }
-
-dummyData.dropDB()
-  .then(() => dummyData.addToAndRemoveFromQueue())
-  .then(() => {
-    return db.Queue.findAll({ //Find all entries that were dequeued within the last hour in Queues table
+    db.Queue.findAll({ //Find all entries that were dequeued within the last hour in Queues table
       where: {
         updatedAt: {
           [db.Sequelize.Op.gt]: new Date(new Date().getTime() - (1000 * 60 * 60))
@@ -19,8 +15,7 @@ dummyData.dropDB()
           [db.Sequelize.Op.eq]: null
         }
       }
-    });
-  })
+    })
   .then((results) => {
     for (let i = 0; i < results.length; i++) {
       averageWaits[results[i].dataValues.restaurantId] = averageWaits[results[i].dataValues.restaurantId] || [];
@@ -110,39 +105,38 @@ dummyData.dropDB()
   })
   .then((results) => {
     //reformat long term and short term data
-    var restData = {};
+    let restData = {};
     results.forEach(term => {
-      var dataVal = term.dataValues;
-      var restId = term.dataValues.restaurant_id;
-      var calcWait = term.dataValues.calculated_wait;
+      let dataVal = term.dataValues;
+      let restId = term.dataValues.restaurant_id;
+      let calcWait = term.dataValues.calculated_wait;
+      restData[restId] = restData[restId] || {};
 
-      if (dataVal.day) {
-        restData[restId] ? restData[restId].ST = calcWait : 
-        restData[restId] = {ST: calcWait}; 
-      } else if (dataVal.month) {
-        restData[restId] ? restData[restId].LT = calcWait :
-        restData[restId] = {LT: calcWait}; 
+      if (dataVal.day !== undefined) {
+        restData[restId].ST = calcWait;
+      } else if (dataVal.month !== undefined) {
+        restData[restId].LT = calcWait;
       }
     });
-    return restData
+    return restData;
   })
   .then(results => {
     //combine short term and long term data
     for (let i in results) {
-      var average = (results[i].LT + results[i].ST) / 2;
+      let average = (results[i].LT + results[i].ST) / 2;
       results[i] = average;
     }
     return results;
   })
   .then(results => {
-    var updates = [];
+    let updates = [];
     for (let id in results) {
       updates.push(
         db.Restaurant.update({
-          average_wait: results[id]
+          average_wait: (results[id] / 1000) / 60
         }, {
           where: {
-            id: id 
+            id: id
           }
         })
       );

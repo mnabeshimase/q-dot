@@ -8,9 +8,10 @@
     "node": ">=6.4.0"
   },
   "scripts": {
-    "start": "nodemon --inspect server/server.bundle.js",
+    "start": "nodemon server/server.bundle.js",
     "test": "mocha --require babel-register --require ./test/setup/helpers.js --require ./test/setup/dom.js --recursive",
-    "bundle": "webpack --watch --progress"
+    "bundle": "webpack --watch --progress",
+    "dev-server": "nodemon --inspect server/server.bundle.js --open"
   },
   "dependencies": {
     "axios": "^0.16.2",
@@ -45,7 +46,11 @@
     "request-promise": "^4.2.2",
     "sequelize": "^4.13.2",
     "socket.io": "^2.0.3",
+    "webpack": "^3.6.0",
     "style-loader": "^0.18.2",
+    "url-loader": "^0.5.9",
+    "css-loader": "^0.28.7",
+    "file-loader": "^1.1.4",
     "webpack": "^3.6.0"
   },
   "devDependencies": {
