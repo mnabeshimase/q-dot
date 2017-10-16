@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -88,8 +88,8 @@ module.exports = require("jquery");
 "use strict";
 
 
-var Sequelize = __webpack_require__(32);
-var SequelizeConfig = process.env.REDIS_URL ? undefined : __webpack_require__(33);
+var Sequelize = __webpack_require__(33);
+var SequelizeConfig = process.env.REDIS_URL ? undefined : __webpack_require__(34);
 var db = void 0;
 
 if (process.env.DATABASE_URL) {
@@ -335,25 +335,25 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _RestaurantLogoBanner = __webpack_require__(17);
+var _RestaurantLogoBanner = __webpack_require__(18);
 
 var _RestaurantLogoBanner2 = _interopRequireDefault(_RestaurantLogoBanner);
 
-var _CustomerInfoForm = __webpack_require__(18);
+var _CustomerInfoForm = __webpack_require__(19);
 
 var _CustomerInfoForm2 = _interopRequireDefault(_CustomerInfoForm);
 
-var _QueueInfo = __webpack_require__(20);
+var _QueueInfo = __webpack_require__(21);
 
 var _QueueInfo2 = _interopRequireDefault(_QueueInfo);
 
-var _RestaurantInformation = __webpack_require__(23);
+var _RestaurantInformation = __webpack_require__(24);
 
 var _RestaurantInformation2 = _interopRequireDefault(_RestaurantInformation);
 
 var _reactRouterDom = __webpack_require__(1);
 
-var _axios = __webpack_require__(24);
+var _axios = __webpack_require__(25);
 
 var _axios2 = _interopRequireDefault(_axios);
 
@@ -750,7 +750,7 @@ module.exports = {
 "use strict";
 
 
-var request = __webpack_require__(34);
+var request = __webpack_require__(35);
 
 var changeCase = function changeCase(name) {
   return name.slice(0, 1).toUpperCase() + name.slice(1).toLowerCase();
@@ -862,44 +862,59 @@ module.exports = {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+module.exports = {
+  accountSid: "AC826953c2c54322a261c5fd413878c775",
+  authToken: "6ee3e11ce1257624d4c75ab1aa9bbbb9"
+};
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /* WEBPACK VAR INJECTION */(function(__dirname) {
 
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _server = __webpack_require__(12);
+var _server = __webpack_require__(13);
 
 var _server2 = _interopRequireDefault(_server);
 
-var _reactRouter = __webpack_require__(13);
+var _reactRouter = __webpack_require__(14);
 
-var _CustomerApp = __webpack_require__(14);
+var _CustomerApp = __webpack_require__(15);
 
 var _CustomerApp2 = _interopRequireDefault(_CustomerApp);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var express = __webpack_require__(28);
+var express = __webpack_require__(29);
 var app = express();
-var server = __webpack_require__(29).Server(app);
-var io = __webpack_require__(30)(server);
-var path = __webpack_require__(31);
+var server = __webpack_require__(30).Server(app);
+var io = __webpack_require__(31)(server);
+var path = __webpack_require__(32);
 var port = process.env.PORT || 1337;
 var db = __webpack_require__(3);
 var dbQuery = __webpack_require__(7);
 var dbManagerQuery = __webpack_require__(10);
 // const dummyData = require('../database/dummydata.js');
 var helpers = __webpack_require__(8);
-var bodyParser = __webpack_require__(35);
-var session = __webpack_require__(36);
-var RedisStore = __webpack_require__(37)(session);
-var passport = __webpack_require__(38);
-var redisconfig = process.env.REDIS_URL ? undefined : __webpack_require__(41);
+var bodyParser = __webpack_require__(36);
+var session = __webpack_require__(37);
+var RedisStore = __webpack_require__(38)(session);
+var passport = __webpack_require__(39);
+var redisconfig = process.env.REDIS_URL ? undefined : __webpack_require__(42);
+var accountSid = __webpack_require__(11).accountSid;
+var authToken = __webpack_require__(11).authToken;
+var client = __webpack_require__(43)(accountSid, authToken);
 
 /* Import React modules for server rendering */
 
-var customerTemplate = __webpack_require__(42);
+var customerTemplate = __webpack_require__(44);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -1184,6 +1199,41 @@ app.delete('/api/manager/history', function (req, res) {
   }
 });
 
+//sends sms to customer when table is ready 18019131608
+app.post('/sendsms', function (req, res) {
+
+  var restaurantid = req.body.restaurantId;
+  var number = req.body.customer.mobile.match(/\d+/g).map(Number).join('');
+  var name = req.body.customer.name;
+  var restaurant = "";
+  var phone = "";
+
+  dbQuery.findInfoForOneRestaurant(restaurantid).then(function (result) {
+    restaurant = result.dataValues.name;
+    phone = result.dataValues.phone;
+  }).then(function () {
+    if (number.length === 10) {
+      client.messages.create({
+        to: '+1' + number,
+        from: "+14159152850",
+        body: 'Hello ' + name + ', your reservation at ' + restaurant + ' is now ready! Please contact us at ' + phone + ' if you have any questions.'
+      }, function (err, message) {
+        if (err) {
+          console.log(err);
+          res.end();
+        }
+        res.end();
+      });
+    }
+  }).catch(function (err) {
+    throw err;
+  });
+
+  console.log('CHECK', restaurant, phone);
+
+  res.end();
+});
+
 server.listen(port, function () {
   console.log('(>^.^)> Server now listening on ' + port + '!');
 });
@@ -1235,19 +1285,19 @@ var socketUpdateManager = function socketUpdateManager(restaurantId) {
 /* WEBPACK VAR INJECTION */}.call(exports, "server"))
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-dom/server");
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-router");
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1267,11 +1317,11 @@ var _CustomerNav = __webpack_require__(4);
 
 var _CustomerNav2 = _interopRequireDefault(_CustomerNav);
 
-var _CustomerMain = __webpack_require__(15);
+var _CustomerMain = __webpack_require__(16);
 
 var _CustomerMain2 = _interopRequireDefault(_CustomerMain);
 
-var _CustomerSignUp = __webpack_require__(26);
+var _CustomerSignUp = __webpack_require__(27);
 
 var _CustomerSignUp2 = _interopRequireDefault(_CustomerSignUp);
 
@@ -1311,7 +1361,7 @@ var CustomerApp = function (_React$Component) {
 exports.default = CustomerApp;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1331,7 +1381,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(1);
 
-var _CustomerHome = __webpack_require__(16);
+var _CustomerHome = __webpack_require__(17);
 
 var _CustomerHome2 = _interopRequireDefault(_CustomerHome);
 
@@ -1383,7 +1433,7 @@ var CustomerMain = function (_React$Component) {
 exports.default = CustomerMain;
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1411,7 +1461,7 @@ var _SelectedRestaurant = __webpack_require__(5);
 
 var _SelectedRestaurant2 = _interopRequireDefault(_SelectedRestaurant);
 
-var _RestaurantCard = __webpack_require__(25);
+var _RestaurantCard = __webpack_require__(26);
 
 var _RestaurantCard2 = _interopRequireDefault(_RestaurantCard);
 
@@ -1522,7 +1572,7 @@ var CustomerHome = function (_React$Component) {
 exports.default = CustomerHome;
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1553,7 +1603,7 @@ var RestaurantLogoBanner = function RestaurantLogoBanner(props) {
 exports.default = RestaurantLogoBanner;
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1573,7 +1623,7 @@ var _jquery = __webpack_require__(2);
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
-var _GroupSizeSelector = __webpack_require__(19);
+var _GroupSizeSelector = __webpack_require__(20);
 
 var _GroupSizeSelector2 = _interopRequireDefault(_GroupSizeSelector);
 
@@ -1803,7 +1853,7 @@ var CustomerInfoForm = function (_React$Component) {
 exports.default = CustomerInfoForm;
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1922,7 +1972,7 @@ exports.default = GroupSizeSelector;
 // <a className="waves-effect waves-light btn-large"><i className="material-icons left">person_add</i>5 +</a>
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1952,11 +2002,11 @@ var _jquery = __webpack_require__(2);
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
-var _socket = __webpack_require__(21);
+var _socket = __webpack_require__(22);
 
 var _socket2 = _interopRequireDefault(_socket);
 
-var _reactModal = __webpack_require__(22);
+var _reactModal = __webpack_require__(23);
 
 var _reactModal2 = _interopRequireDefault(_reactModal);
 
@@ -2233,19 +2283,19 @@ var QueueInfo = function (_React$Component) {
 exports.default = QueueInfo;
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports) {
 
 module.exports = require("socket.io-client");
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-modal");
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2325,13 +2375,13 @@ var RestaurantInformation = function RestaurantInformation(props) {
 exports.default = RestaurantInformation;
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports) {
 
 module.exports = require("axios");
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2435,7 +2485,6 @@ var RestaurantCard = function (_React$Component) {
                 'span',
                 { className: 'wait-time' },
                 'wait time: ',
-
                 this.props.restaurant.total_wait,
                 ' mins'
               ),
@@ -2460,7 +2509,7 @@ exports.default = RestaurantCard;
 // <Link to={`/restaurant/${this.props.restaurant.name}`}>
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2476,7 +2525,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(27);
+var _reactDom = __webpack_require__(28);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
@@ -2656,74 +2705,82 @@ var CustomerSignUp = function (_React$Component) {
 exports.default = CustomerSignUp;
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-dom");
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports) {
 
 module.exports = require("express");
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports) {
 
 module.exports = require("http");
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports) {
 
 module.exports = require("socket.io");
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports) {
 
 module.exports = require("path");
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports) {
 
 module.exports = require("sequelize");
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-/***/ }),
-/* 34 */
-/***/ (function(module, exports) {
-
-module.exports = require("request");
+module.exports = {
+  database: 'qdot',
+  username: 'evanchen',
+  password: '',
+  dialect: 'postgres',
+  port: 5432
+};
 
 /***/ }),
 /* 35 */
 /***/ (function(module, exports) {
 
-module.exports = require("body-parser");
+module.exports = require("request");
 
 /***/ }),
 /* 36 */
 /***/ (function(module, exports) {
 
-module.exports = require("express-session");
+module.exports = require("body-parser");
 
 /***/ }),
 /* 37 */
 /***/ (function(module, exports) {
 
-module.exports = require("connect-redis");
+module.exports = require("express-session");
 
 /***/ }),
 /* 38 */
+/***/ (function(module, exports) {
+
+module.exports = require("connect-redis");
+
+/***/ }),
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2731,8 +2788,8 @@ module.exports = require("connect-redis");
 
 var db = __webpack_require__(3);
 var dbQuery = __webpack_require__(7);
-var passport = __webpack_require__(39);
-var LocalStrategy = __webpack_require__(40).Strategy;
+var passport = __webpack_require__(40);
+var LocalStrategy = __webpack_require__(41).Strategy;
 var dbManagerQuery = __webpack_require__(10);
 passport.use(new LocalStrategy(function (username, password, done) {
   dbQuery.getManagerInfo(username).then(function (user) {
@@ -2764,23 +2821,16 @@ passport.deserializeUser(function (id, done) {
 module.exports = passport;
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports) {
 
 module.exports = require("passport");
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports) {
 
 module.exports = require("passport-local");
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 /***/ }),
 /* 42 */
@@ -2789,8 +2839,27 @@ module.exports = require("passport-local");
 "use strict";
 
 
+module.exports = {
+  host: "46.101.225.211",
+  port: "6379"
+};
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports) {
+
+module.exports = require("twilio");
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 module.exports = function (options) {
   return "\n    <!DOCTYPE html>\n      <html>\n      <head>\n        <link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\" />\n        <!--Import Google Icon Font-->\n        <link href=\"https://fonts.googleapis.com/icon?family=Material+Icons\" rel=\"stylesheet\">\n        <!--Import customermain.css-->\n        <link type=\"text/css\" rel=\"stylesheet\" href=\"/customer/css/customermain.css\" media=\"screen,projection\"/>\n        <!--Import materialize.css NOTE: right now is combined with customermain, need to refactor -->\n    <!--     <link type=\"text/css\" rel=\"stylesheet\" href=\"./css/materialize.min.css\"  media=\"screen,projection\"/> -->\n\n        <!--Let browser know website is optimized for mobile-->\n        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/>\n\n        <title>q.</title>\n      </head>\n\n      <body>\n        <div id='app'>" + options.component + "</div>\n        <script src='/js/customerApp-bundle.js'></script>\n        <!--Import jQuery before materialize.js-->\n        <script src=\"https://code.jquery.com/jquery-3.2.1.min.js\"></script>\n        <script type=\"text/javascript\" src=\"/customer/js/materialize.min.js\"></script>\n      </body>\n\n      <footer>\n        <br><br><br>\n        <hr>\n        by eggs-coffee-toast\n      </footer>\n    </html>";
 };
+
 /***/ })
 /******/ ]);
