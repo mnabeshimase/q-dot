@@ -135,9 +135,9 @@ const addToQueue = (params) => {
     .then(restaurant => {
       if (restaurant.status === 'Open') {
         queueInfo.position = restaurant.nextPosition + 1;
-        queueInfo.wait = restaurant.total_wait;
         queueInfo.restaurantId = restaurant.id;
         let totalWait = restaurant.total_wait + restaurant.average_wait;
+        queueInfo.wait = restaurant.total_wait === 0 ? 0 : totalWait;
         return db.Restaurant.upsert({'nextPosition': queueInfo.position, 'total_wait': totalWait, phone: restaurant.phone});
       } else {
         throw new Error('Restaurant has closed the queue');
@@ -205,13 +205,13 @@ const removeFromQueue = (queueId) => {
       var promises = [];
       for (var i = 0; i < results.length; i++) {
         promises.push(results[i].update({
-          wait: results[i].wait - restaurant.average_wait,
+          wait: results[i].wait - restaurant.average_wait < 0 ? 0 : results[i].wait - restaurant.average_wait,
           position: results[i].position - 1,
         }));
       }
       return Promise.all(promises);
     })
-    .then(() => db.Restaurant.upsert({'total_wait': restaurant.total_wait - restaurant.average_wait, phone: restaurant.phone}))
+    .then(() => db.Restaurant.upsert({'total_wait': restaurant.total_wait - restaurant.average_wait < 0 ? 0 : restaurant.total_wait - restaurant.average_wait, phone: restaurant.phone, nextPosition: restaurant.nextPosition - 1}))
     .then(() => {
       return db.Queue.update({
         position: null,
