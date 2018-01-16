@@ -68,31 +68,33 @@ class CustomerInfoForm extends React.Component {
   }
 
   submitCustomerInfo() {
-    let fullName = `${this.state.customerFirstName} ${this.state.customerLastName}`;
-    let windowUrl = window.location.href;
-    let id = windowUrl.slice(-1);
-
-    $.ajax({
-      method: 'POST',
-      url: '/api/queues',
-      data: JSON.stringify({
-        name: fullName,
-        mobile: this.state.customerMobile,
-        email: this.state.customerEmail,
-        customerMessage: this.state.customerMessage,
-        size: this.state.groupSize,
-        restaurantId: id
-      }),
-      contentType: 'application/json',
-      success: (data) => {
-        console.log('this was a successful post request', data);
-        this.props.customerInfoSubmitted(data.queueId, data.position);
-        window.location.replace(`/customer/queueinfo?queueId=${data.queueId}`);
-      },
-      failure: (error) => {
-        console.log('something went wrong with the post request', error);
-      }
-    });
+    if(this.state.customerFirstName && this.state.customerLastName) {
+      let fullName = `${this.state.customerFirstName} ${this.state.customerLastName}`;
+      let windowUrl = window.location.href;
+      let id = windowUrl.slice(-1);
+  
+      $.ajax({
+        method: 'POST',
+        url: '/api/queues',
+        data: JSON.stringify({
+          name: fullName,
+          mobile: this.state.customerMobile,
+          email: this.state.customerEmail,
+          customerMessage: this.state.customerMessage,
+          size: this.state.groupSize,
+          restaurantId: id
+        }),
+        contentType: 'application/json',
+        success: (data) => {
+          console.log('this was a successful post request', data);
+          this.props.customerInfoSubmitted(data.queueId, data.position);
+          window.location.replace(`/customer/queueinfo?queueId=${data.queueId}`);
+        },
+        failure: (error) => {
+          console.log('something went wrong with the post request', error);
+        }
+      });
+    }
   }
 
   render() {

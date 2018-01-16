@@ -98,7 +98,6 @@ export default class QueueInfo extends React.Component {
       method: 'GET',
       url: `/queues?queueId=${id}`,
       success: (data) => {
-        console.log('successfully grabbed queue data for customer', data);
         this.setState({ currentCustomer: data });
         // report queueId to server socket
         this.socket.emit('customer report', id);
@@ -152,7 +151,7 @@ export default class QueueInfo extends React.Component {
             </div>
         }
         <div>
-          <button className="btn btn-outline-primary" onClick={this.openModal}>Chat</button>
+          <button className="btn btn-outline-primary" onClick={this.openModal} style={{'margin': '10px 0'}}>Chat</button>
           <div>
           <button className="btn btn-outline-primary" onClick={this.removeFromQueue}>Cancel reservation</button>
           </div>

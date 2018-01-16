@@ -11,7 +11,7 @@ const CustomerNav = () => (
     <nav>
       <div className="nav-wrapper">
         <ul className="nav-mobile hide-on-med-and-down">
-          <li><a className="dropdown-button" href="#!" data-activates="dropdown1">q.<i className="material-icons right">arrow_drop_down</i></a></li>
+          <li><a className="dropdown-button" href="#!" data-activates="dropdown1" data-beloworigin="true">q.<i className="material-icons right">arrow_drop_down</i></a></li>
         </ul>
       </div>
     </nav>

@@ -9467,6 +9467,14 @@ THESE ARE CHANGES SPECIFIC TO CUSTOMERMAIN
 
 */
 
+/* .queue-number { 
+  white-space:normal
+}
+.restaurant-type {
+  white-space:normal;
+  width: 400px;
+} */
+
 nav {
   background-color: #fff;
 }
@@ -9482,7 +9490,7 @@ nav li a {
   width: 100%;
 }
 
-@media only screen and (min-width: 501px) {
+@media (min-width: 501px) {
   .customer-group-selector-container, .select-restaurant-container {
     position: relative;
     display: table;
@@ -9521,7 +9529,7 @@ nav li a {
   margin-right: 0px;
 }*/
 
-@media only screen and (min-width: 501px) {
+@media (min-width: 501px) {
   .customer-group-buttons {
     position: relative !important;
     padding-top: 10px !important;
@@ -9556,7 +9564,7 @@ nav li a {
   }
 }
 
-@media only screen and (min-width: 301px) {
+@media (min-width: 301px) {
   .customer-group-buttons {
     position: relative;
     padding-top: 10px;
@@ -9572,7 +9580,10 @@ nav li a {
   margin-left: 15%;
 }
 
-@media only screen and (max-width: 500px) {
+@media (max-width: 630px) {
+  .restaurant-type {
+    display: none;
+  }
   h4 {
     font-family: Roboto, Helvetica Neue, sans-serif;
     color: #202020;
@@ -9597,9 +9608,9 @@ nav li a {
   width: 100% !important;
 }
 
-@media only screen and (min-width: 601px) {
+@media (min-width: 601px) {
   .card {
-    width: 50% !important;
+    width: 70% !important;
   }
 }
 
@@ -9791,7 +9802,10 @@ nav li a {
 }
 
 .wait-time {
-  float: right;
+  /* text-align: right; */
+  float: right !important;
+  position: absolute;
+  right: 1em;
 }
 
 /*CUSTOMER QUEUE INFO & POSITION INDICATOR*/
@@ -9808,7 +9822,7 @@ nav li a {
   overflow: hidden;
 }
 
-@media only screen and (min-width: 501px) {
+@media (min-width: 501px) {
   .customer-queue-info-container h5 {
     font-size: 28px !important;
     font-weight: 700 !important;
@@ -9881,9 +9895,9 @@ nav li a {
 
 /*GRADIENT BANNER*/
 
-@media screen and (min-width: 451px) {
+@media (min-width: 451px) {
   .gradient-banner-container {
-    height: 350px !important;
+    height: 275px !important;
     width: 100%;
     position: relative;
     background: #12788E; /* For browsers that do not support gradients */
@@ -9980,3 +9994,4 @@ nav li a {
   line-height: 1 !important;
   left: 50%;
 }
+

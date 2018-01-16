@@ -31,7 +31,6 @@ class CustomerHome extends React.Component {
       method: 'GET',
       url: '/api/restaurants',
       success: (data) => {
-        console.log('successfully grabbed restaurant data', data);
         this.setState({ restaurantList: data });
       },
       failure: (error) => {
